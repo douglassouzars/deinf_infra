@@ -34,16 +34,18 @@ body{
 }
 #caixa button{
     width:100px;
-    height:30px;
+    height:20px;
 }
-.textbox{
-    width:100%;
-    overflow: hidden:
-    font-size: 20px;
+.textbox {
+    width: 90%;
+    overflow: hidden: font-size: 20px;
     padding: 8px 0;
-    margin:8px 0;
+    margin: 8px 12px;
     border-bottom: 1px solid;
+    margin-top: -2px;
 }
+
+
 #header {
     background-color: #09044c;
     border-bottom: 8px solid #ff4800;
@@ -85,6 +87,9 @@ body{
 /*_________________________________________________________________
 TELA PRINCIPAL
 _________________________________________________________________*/
+body{
+    background-color:#86a2ab;
+}
 #headermain {
     background-color: #09044c;
     border-bottom: 8px solid #ff4800;
@@ -130,6 +135,7 @@ _________________________________________________________________*/
 
 .item2_21 {
     margin-top:1.5rem;
+    margin-left:-4rem;
 }
 .item2_22 {
     margin-top:1.5rem;
@@ -153,3 +159,87 @@ _________________________________________________________________*/
     margin-top: 6rem;
 
 }
+.container{
+    margin-top: 100rem;
+    width:100%;
+    background-color: #86a2ab;
+    margin-left: -5rem;
+    margin-top:1rem;
+}
+.nav-bar {
+    width: 80px;
+    height: 100%;
+    background-color:#ff4800;
+    border-radius:10px;
+    position: fixed;
+    margin-top:-1rem;
+    margin-left:3.5rem;
+    color:white;
+}
+.nav-bar ul{
+    color:red;
+}
+.nav-bar ul li{
+    color: red;
+    list-style: none;
+    position: center;
+}
+.nav-bar ul li a{
+    color: #fff;
+    text-decoration: none;
+    display: flex;
+    font-size: 20px;
+    padding: 14px;
+    margin-left: -22px;
+    margin-top: 20px;
+
+    /* align-items: center; */
+}
+.nav-bar ul li a:hover{
+    background-color:white;
+
+}
+.nav-bar ul li img{
+    width: 22px;
+}
+.calendario{
+    background-color:white;
+    border-radius:7px;
+    margin-top: 9.5rem;
+    margin-left: 10rem;
+    width: 105%;
+    height:44rem;
+
+}
+.calendar{
+    background-color: white;
+    margin-top: 50rem;
+
+}
+#form-check {
+    display: grid;
+    grid-template-columns:5% 15% 15% 15% 15% 10% 11% 7% 7%;
+    color: red;
+    margin:1rem 0rem 1rem 0rem;
+    text-align: center;
+    position: relative;
+    border-bottom: 2px solid black;
+
+}
+.item h2{
+    font-size: 18px;
+    color:black;
+
+
+}
+#form-check2, #form-check3, #form-check4,#form-check5,#form-check6,#form-check7 {
+    display: grid;
+    grid-template-columns:5% 15% 15% 15% 15% 10% 11% 7% 7%;
+    color: red;
+    margin:0rem 0rem 1rem 0rem;
+    text-align: center;
+    position:center;
+
+
+}
+

@@ -1,23 +1,34 @@
+{% load bootstrap4 %}
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
     <title>SISTEMA DEINF INFRA</title>
-    <link rel="stylesheet" href="../static/css/bootstrap.min.css"/>
+    {% bootstrap_css %}
     <link rel="stylesheet" href="../static/css/main.css" />
+
+    <script src='fullcalendar/lang/pt-br.js'></script>
 </head>
 <body>
+
+
     <div id="headermain">
         <div id="dados">
             <div class="item"><img src = "../static/images/novacap1.png" alt="My Happy SVG"/></div>
             <div class="item2">
                 <div id="subdados">
-                    <div class="item2_11">Nome:<input type="text" placeholder="fulano.ciclano" name=""></div>
-                    <div class="item2_12">Matrícula:<input type="text" placeholder="XXXXXXXXXXX" name=""></div>
-                    <div class="item2_13">Setor:<input type="text" placeholder="DA-DEINF" name=""></div>
-                    <div class="item2_21">Cargo:<input type="text" placeholder="Comissionado" name=""></div>
-                    <div class="item2_22">Ramal:<input type="text" placeholder="XXXX" name=""></div>
-                    <div class="item2_23">Jornada Atual:<input type="text" placeholder="30 DIAS" name=""></div>
+
+
+
+                    <div class="item2_11">Nome: {{ cn }}</div>
+                    <div class="item2_12">Ramal:{{ t }}</div>
+                    <div class="item2_13">Setor:{{ dep }}</div>
+                    <div class="item2_21">Cargo:{{ title }}</div>
+                    <div class="item2_22">E-mail: {{ mail }}</div>
+
+                    <div class="item2_23">Matrícula:{{ descricao }}</div>
+
+
                 </div>
             </div>
             <div class="item">
@@ -28,10 +39,149 @@
         </div>
     </div>
     <div class="container">
-        <div class="calendario">
+        <div class="nav-bar">
+            <ul>
+                <li><a href="#">
+                    <img src="../static/images/chat-dots.svg">
 
+
+                </a></li>
+                <li><a href="#">
+                    <img src="../static/images/calendar-date.svg">
+
+                </a></li>
+                <li><a href="#">
+                    <img src="../static/images/bell.svg">
+
+                </a></li>
+                <li><a href="#">
+                    <img src="../static/images/cloud-arrow-up.svg">
+
+                </a></li>
+                <li><a href="#">
+                    <img src="../static/images/diagram-3-fill.svg">
+
+                </a></li>
+                <li><a href="#">
+                    <img src="../static/images/envelope-at-fill.svg">
+
+                </a></li>
+                <li><a href="#">
+                    <img src="../static/images/headset.svg">
+
+
+            </ul>
         </div>
-        <div class="info"
+        <div class="calendario">
+            <div id="calendar">
+                <nav class="navbar navbar-light bg-light justify-content-between">
+                    <a class="navbar-brand">Filtro</a>
+                    <form class="form-inline">
+                        <input class="form-control mr-sm-2" type="search" placeholder="Data Inicial" aria-label="Search">
+                        <button class="btn btn-outline-success mr-sm-2" type="submit"><img src="../static/images/calendar-date.svg"></button>
+                        <input class="form-control mr-sm-2" type="search" placeholder="Data Final" aria-label="Search">
+                        <button class="btn btn-outline-success mr-sm-2" type="submit"><img src="../static/images/calendar-date.svg"></button>
+                        <input class="form-control mr-sm-2" type="search" placeholder="Ex.: Abono" aria-label="Search">
+                        <button class="btn btn-outline-success my-2 my-sm-0" type="submit"><img src="../static/images/search.svg"></button>
+                    </form>
+                </nav>
+                <div id="form-check">
+                    <div class="item"><input type="checkbox" id="blankCheckbox" value="option1" aria-label="..."></div>
+                    <div class="item"><h2> Ocorr. Data</h2></div>
+                    <div class="item"><h2> Entrada/Saída</h2></div>
+                    <div class="item"><h2> Horas Extras</h2></div>
+                    <div class="item"><h2> Horas Faltando</h2></div>
+                    <div class="item"><h2> Saldo</h2></div>
+                    <div class="item"><h2> Solicitação</h2></div>
+                    <div class="item"><h2> Ações</h2></div>
+                    <div class="item"><h2> Ações</h2></div>
+                </div>
+                <div id="form-check2">
+                    {% if dep %}
+                    <div class="item"><input type="checkbox" id="blankCheckbox" value="option1" aria-label="..."></div>
+                    <div class="item"><h2> {{ descricao }}</h2></div>
+                    <div class="item"><h2> {{ descricao }}</h2></div>
+                    <div class="item"><h2> {{ descricao }}</h2></div>
+                    <div class="item"><h2> {{ descricao }}</h2></div>
+                    <div class="item"><h2> {{ descricao }}</h2></div>
+                    <div class="item"><h2> {{ descricao }}</h2></div>
+                    {% else %}
+
+                    {% endif %}
+                </div>
+                <div id="form-check3">
+                    {% if dep %}
+                    <div class="item"><input type="checkbox" id="blankCheckbox" value="option1" aria-label="..."></div>
+                    <div class="item"><h2> {{ descricao }}</h2></div>
+                    <div class="item"><h2> {{ descricao }}</h2></div>
+                    <div class="item"><h2> {{ descricao }}</h2></div>
+                    <div class="item"><h2> {{ descricao }}</h2></div>
+                    <div class="item"><h2> {{ descricao }}</h2></div>
+                    <div class="item"><h2> {{ descricao }}</h2></div>
+                    {% else %}
+
+                    {% endif %}
+                </div>
+                <div id="form-check4">
+                    {% if dep %}
+                    <div class="item"><input type="checkbox" id="blankCheckbox" value="option1" aria-label="..."></div>
+                    <div class="item"><h2> {{ descricao }}</h2></div>
+                    <div class="item"><h2> {{ descricao }}</h2></div>
+                    <div class="item"><h2> {{ descricao }}</h2></div>
+                    <div class="item"><h2> {{ descricao }}</h2></div>
+                    <div class="item"><h2> {{ descricao }}</h2></div>
+                    <div class="item"><h2> {{ descricao }}</h2></div>
+                    {% else %}
+
+                    {% endif %}
+                </div>
+                <div id="form-check5">
+                    {% if dep %}
+                    <div class="item"><input type="checkbox" id="blankCheckbox" value="option1" aria-label="..."></div>
+                    <div class="item"><h2> {{ descricao }}</h2></div>
+                    <div class="item"><h2> {{ descricao }}</h2></div>
+                    <div class="item"><h2> {{ descricao }}</h2></div>
+                    <div class="item"><h2> {{ descricao }}</h2></div>
+                    <div class="item"><h2> {{ descricao }}</h2></div>
+                    <div class="item"><h2> {{ descricao }}</h2></div>
+                    {% else %}
+
+                    {% endif %}
+                </div>
+                <div id="form-check6">
+                    {% if sn %}
+                    <div class="item"><input type="checkbox" id="blankCheckbox" value="option1" aria-label="..."></div>
+                    <div class="item"><h2> {{ descricao }}</h2></div>
+                    <div class="item"><h2> {{ descricao }}</h2></div>
+                    <div class="item"><h2> {{ descricao }}</h2></div>
+                    <div class="item"><h2> {{ descricao }}</h2></div>
+                    <div class="item"><h2> {{ descricao }}</h2></div>
+                    <div class="item"><h2> {{ descricao }}</h2></div>
+                    {% else %}
+                    {% endif %}
+                </div>
+                <div id="form-check7">
+                    {% if sn %}
+                    <div class="item"><input type="checkbox" id="blankCheckbox" value="option1" aria-label="..."></div>
+                    <div class="item"><h2> {{ descricao }}</h2></div>
+                    <div class="item"><h2> {{ descricao }}</h2></div>
+                    <div class="item"><h2> {{ descricao }}</h2></div>
+                    <div class="item"><h2> {{ descricao }}</h2></div>
+                    <div class="item"><h2> {{ descricao }}</h2></div>
+                    <div class="item"><h2> {{ descricao }}</h2></div>
+                    {% else %}
+
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        <div class="info">
+            <h1>a</h1>
+        </div>
     </div>
+
+
+
 </body>
 </html>
+<script type="text/javascript" src="../static/js/calendar.js"></script>

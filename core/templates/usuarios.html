@@ -1,0 +1,50 @@
+{% load bootstrap4 %}
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>SISTEMA DEINF INFRA</title>
+    {% bootstrap_css %}
+    <link rel="stylesheet" href="../static/css/main.css" />
+</head>
+<body>
+    <div id="headermain">
+        <div id="dados">
+            <div class="item"><img src = "../static/images/novacap1.png" alt="My Happy SVG"/></div>
+            <div class="item2">
+                <div id="subdados">
+                    <div class="item2_11">Nome:<input type="text" placeholder="fulano.ciclano" name=""></div>
+                    <div class="item2_12">Matrícula:<input type="text" placeholder="XXXXXXXXXXX" name=""></div>
+                    <div class="item2_13">Setor:<input type="text" placeholder="DA-DEINF" name=""></div>
+                    <div class="item2_21">Cargo:<input type="text" placeholder="Comissionado" name=""></div>
+                    <div class="item2_22">Ramal:<input type="text" placeholder="XXXX" name=""></div>
+                    <div class="item2_23">Jornada Atual:          {{novo_u.nome}} {{novo_u.senha}}{{nome}} {{senha}}teste<input type="text" placeholder="30 DIAS" name=""></div>
+                </div>
+            </div>
+            <div class="item">
+
+                <button type="button" class="btn_alterar btn btn-warning"  name="" value="Logar">ALTERAR</button>
+                <button type="button" class="btn_salvar btn btn-success"  name="" value="Logar">SALVAR</button>
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <div class="calendario">
+            <table>
+                <h1> tabela</h1>
+
+                  {{novo_u.nome}} {{novo_u.senha}}{{usuario.nome}}
+            {% for usuario in usuarios %}
+                <tr>
+                    <td>{{usuario.nome}}</td>
+                    <td>{{novo_u.nome}}</td>
+                </tr>
+            {% endfor %}
+            </table>
+        </div>
+        <div class="info">
+            {{userna}} {{usuario.passwo}}
+        </div>
+    </div>
+</body>
+</html>

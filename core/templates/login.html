@@ -1,30 +1,52 @@
+{% load bootstrap4 %}
 <!DOCTYPE HTML>
-<html lang="pt-br">
+<html lang="pt-br" xmlns="http://www.w3.org/1999/html">
     <head>
         <meta charset="utf-8">
-        <title>lOGIN DE ACESSO</title>
-        <link rel="stylesheet" href="../static/css/bootstrap.min.css"/>
+        <title>LOGIN DE ACESSO</title>
+        {% bootstrap_css %}
         <link rel="stylesheet" href="../static/css/main.css" />
     </head>
     <body>
+
         <div id="fundo">
+            {% bootstrap_messages %}
             <div id="header">
                 <img src = "../static/images/novacap1.png" alt="My Happy SVG"/>
                 <h2>Companhia Urbanizadora da Nova Capital do Brasil</h2>
             </div>
-            <div id="caixa">
+            <div id="caixa" >
                 <h1>ACESSO</h1>
-                <div class="textbox">
-                    <input type="text" placeholder="nome.sobrenome" name="">
+                        <div class="textbox">
+                        {% block content %}
+                         <form name="formLogin" id="formLogin" method="post" action='/loadlogin/' >
+
+                                {% if msg %}
+                                    <div class="alert {{class}}">
+                                    {{msg}}
+                                    </div>
+                                {% endif %}
+
+                                {% csrf_token %}
+                                <input class="textbox" type="text" placeholder="nome" name="nome">
+                                <input type="password" placeholder="senha" name="senha" class="textbox">
+                                <input class="btn_acesso btn btn-info" type="submit" name="" value="Logar">
+
+                        </form>
+                        {% endblock %}
+                        </div>
+                <!--<div class="textbox">
+
                 </div>
                 <div class="textbox">
-                    <input type="password" placeholder="senha" name="">
-                </div>
-                <button type="button" class="btn_acesso btn btn-info" type="button" name="" value="Logar">LOGAR</button>
+
+                </div>-->
+
             </div>
             <div id="rodape">
                 <h2>2023 Novacap, Versão 1.0 - Douglas Rodrigues Souza</h2>
             </div>
         </div>
+    {% bootstrap_javascript jquery='full' %}
     </body>
 </html>
