@@ -1,0 +1,343 @@
+{% extends 'registration/login.html' %}
+{% load bootstrap4 %}
+
+
+    {% block content %}
+    <main>
+    <div id="fundo2">
+        <div class="tela_painel">
+            <div class="painel">
+                <nav class="navcad navbar-light bg-light justify-content-between">
+                    <h1>Formulário de Cadastro</h1>
+                    <form>
+                      <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label for="inputNome">Nome Completo:</label>
+                            <input type="text" class="form-control" id="inputNome" placeholder="Nome Completo">
+                        </div>
+                        <div class="form-group col-md-2">
+                            <label for="inputTelefoneFixo">Telefone Fixo:</label>
+                            <input type="text" class="form-control" id="inputTelefoneFixo" placeholder="( )">
+                        </div>
+                        <div class="form-group col-md-2">
+                            <label for="inputTelefoneCelular">Telefone Celular:</label>
+                            <input type="text" class="form-control" id="inputTelefoneCelular" placeholder="( )">
+                        </div>
+                        <div class="form-group col-md-2">
+                            <label for="inputTelefoneContato">Telefone Contato:</label>
+                            <input type="text" class="form-control" id="inputTelefoneContato" placeholder="( )">
+                        </div>
+                      </div>
+                      <div class="form-row">
+                        <div class="form-group col-md-10">
+                            <label for="inputEndereco">Endereço Completo:</label>
+                            <input type="text" class="form-control" id="inputEndereco" placeholder="Setor de Áreas Públicas, Lote B S/n Sia Sul - Guará, Brasília - DF,">
+                        </div>
+                        <div class="form-group col-md-2">
+                            <label for="inputCep">CEP:</label>
+                            <input type="text" class="form-control" id="inputCep" placeholder="71215-000">
+                        </div>
+                      </div>
+                      <div class="form-group">
+                             <div class="form-row align-items-center">
+                                <div class="col-auto my-1">
+                                    <label class="mr-sm-2" for="inlineFormCustomSelect">Tipo de Moradia:</label>
+                                    <select class="custom-select mr-sm-2" id="inlineFormCustomSelect" name="tipo_moradia">
+                                        <option selected>Selecione um item...</option>
+                                        <option value="1">Aluguel</option>
+                                        <option value="2">Própria quitada</option>
+                                        <option value="3">Própria Financiada</option>
+                                        <option value="4">Outros</option>
+                                    </select>
+                                </div>
+                            </div>
+                      </div>
+                      {% if tipo_moradia == "4" %}
+                          <div class="form-group col-md-6">
+                             <label for="inputOutros">teste:</label>
+                             <input type="email" class="form-control" id="inputOutros" name="Outros" placeholder="tet">
+                          </div>
+                      {% endif %}
+                      <div class="form-row">
+                        <div class="form-group col-md-4">
+                            <label for="inputEmail">E-mail:</label>
+                            <input type="email" class="form-control" id="inputEmail" placeholder="Email">
+                        </div>
+                        <div class="form-group col-md-1">
+                            <label for="inputRC">Raça/Cor:</label>
+                            <input type="text" class="form-control" id="inputRC" placeholder="Parda">
+                        </div>
+                        <div class="form-group col-md-2">
+                            <label for="inputTS">Tipo Sanguíneo:</label>
+                            <input type="text" class="form-control" id="inputTS" placeholder="A+">
+                        </div>
+                        <div class="form-group col-md-2">
+                            <label for="inputDoador">Doador de Sangue:</label>
+                            <div class="form-check">
+                                <INPUT TYPE="RADIO" NAME="OPCAO" VALUE="op1"> Sim
+                                <INPUT TYPE="RADIO" NAME="OPCAO" VALUE="op2"> Não
+                            </div>
+                        </div>
+                        <div class="form-group col-md-3">
+                            <label for="inputDoador">Portador de Necessidades Especiais:</label>
+                            <div class="form-check">
+                                <INPUT TYPE="RADIO" NAME="OPCAO1" VALUE="op1"> Sim
+                                <INPUT TYPE="RADIO" NAME="OPCAO1" VALUE="op2"> Não
+                            </div>
+                        </div>
+                      </div>
+                      <div class="form-row">
+                        <div class="form-group col-md-2">
+                            <label for="inputData">Data de Nascimento:</label>
+                            <input type="text" class="form-control" id="inputData" placeholder="01/01/2023">
+                        </div>
+                        <div class="form-group col-md-3">
+                            <label for="inputNaturalidade">Naturalidade/UF:</label>
+                            <input type="text" class="form-control" id="inputNaturalidade" placeholder="Brasiliense/DF">
+                        </div>
+                        <div class="form-group col-md-3">
+                            <label for="inputEstadoCivil">Estado Civil:</label>
+                            <input type="text" class="form-control" id="inputEstadoCivil" placeholder="Solteiro">
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label for="inputGrau">Grau de Instrução:</label>
+                            <input type="text" class="form-control" id="inputGrau" placeholder="Superior Completo">
+                        </div>
+                      </div>
+                      <div class="form-row">
+                        <div class="form-group col-md-7">
+                            <label for="inputNConjuge">Nome do Conjuge:</label>
+                            <input type="text" class="form-control" id="inputNConjuge" placeholder="Nome completo">
+                        </div>
+                        <div class="form-group col-md-5">
+                            <label for="inputGrauConjuge">Grau de Instrução do Cônjuge:</label>
+                            <input type="text" class="form-control" id="inputGrauConjuge" placeholder="">
+                        </div>
+                      </div>
+                      <label><b>Filiação:</b></label>
+                      <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label for="inputNPai">Nome do Pai:</label>
+                            <input type="text" class="form-control" id="inputNPai" placeholder="Nome completo">
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="inputNMae">Nome da Mãe:</label>
+                            <input type="text" class="form-control" id="inputNMae" placeholder="">
+                        </div>
+                      </div>
+                      <div class="form-row">
+                        <div class="form-group col-md-3">
+                            <label for="inputCPF">CPF:</label>
+                            <input type="text" class="form-control" id="inputCPF" placeholder="">
+                        </div>
+                        <div class="form-group col-md-3">
+                            <label for="inputRG">RG:</label>
+                            <input type="text" class="form-control" id="inputRG" placeholder="">
+                        </div>
+                        <div class="form-group col-md-3">
+                            <label for="inputEmisssor">Org. Emissor/UF:</label>
+                            <input type="text" class="form-control" id="inputEmissor" placeholder="SSP/DF">
+                        </div>
+                        <div class="form-group col-md-3">
+                            <label for="inputDataCPF">Data de emissão:</label>
+                            <input type="text" class="form-control" id="inputDataCPF" placeholder="01/01/2023">
+                        </div>
+                      </div>
+                      <div class="form-row">
+                        <div class="form-group col-md-2">
+                            <label for="inputReservista">Cert. Reservista:</label>
+                            <input type="text" class="form-control" id="inputReservista">
+                        </div>
+                        <div class="form-group col-md-2">
+                            <label for="inputSerieReservista">Série:</label>
+                            <input type="text" class="form-control" id="inputSerieReservista">
+                        </div>
+                        <div class="form-group col-md-2">
+                            <label for="inputCategoria">Categoria:</label>
+                            <input type="text" class="form-control" id="inputCategoria">
+                        </div>
+                        <div class="form-group col-md-2">
+                            <label for="inputRegMilitar">Reg. Militar:</label>
+                            <input type="text" class="form-control" id="inputRegMilitar">
+                        </div>
+                        <div class="form-group col-md-2">
+                            <label for="inputOrgao">Orgão/UF:</label>
+                            <input type="text" class="form-control" id="inputOrgao">
+                        </div>
+                        <div class="form-group col-md-2">
+                            <label for="inputDataReservista">Data de emissão:</label>
+                            <input type="text" class="form-control" id="inputDataReservista">
+                        </div>
+                      </div>
+                      <div class="form-row">
+                        <div class="form-group col-md-3">
+                            <label for="inputTitulo">Título de eleitor:</label>
+                            <input type="text" class="form-control" id="inputTitulo">
+                        </div>
+                        <div class="form-group col-md-2">
+                            <label for="inputSecao">Seção:</label>
+                            <input type="text" class="form-control" id="inputSecao">
+                        </div>
+                        <div class="form-group col-md-2">
+                            <label for="inputZona">Zona:</label>
+                            <input type="text" class="form-control" id="inputZona">
+                        </div>
+                        <div class="form-group col-md-3">
+                            <label for="inputLocalEmissao">Local de emissão/UF:</label>
+                            <input type="text" class="form-control" id="inputLocalEmissao">
+                        </div>
+                        <div class="form-group col-md-2">
+                            <label for="inputDataTitulo">Data de emissão:</label>
+                            <input type="text" class="form-control" id="inputDataTitulo">
+                        </div>
+                      </div>
+                      <div class="form-row">
+                        <div class="form-group col-md-5">
+                            <label for="inputCTPS">Carteira de Trabalho - CTPS:</label>
+                            <input type="text" class="form-control" id="inputCTPS" placeholder="">
+                        </div>
+                        <div class="form-group col-md-3">
+                            <label for="inputCTPSSerie">Série:</label>
+                            <input type="text" class="form-control" id="inputCTPSSerie" placeholder="">
+                        </div>
+                        <div class="form-group col-md-1">
+                            <label for="inputCTPSUF">UF:</label>
+                            <input type="text" class="form-control" id="inputCTPSUF" placeholder="DF">
+                        </div>
+                        <div class="form-group col-md-3">
+                            <label for="inputDataCTPS">Data de emissão:</label>
+                            <input type="text" class="form-control" id="inputDataCTPS" placeholder="01/01/2023">
+                        </div>
+                      </div>
+                      <div class="form-row">
+                        <div class="form-group col-md-5">
+                            <label for="inputRegistro">Registro de Classe:</label>
+                            <input type="text" class="form-control" id="inputRegistro" placeholder="">
+                        </div>
+                        <div class="form-group col-md-3">
+                            <label for="inputRegistroEmissor">Órgão Emissor:</label>
+                            <input type="text" class="form-control" id="inputRegistroEmissor" placeholder="">
+                        </div>
+                        <div class="form-group col-md-1">
+                            <label for="inputRegistroUF">UF:</label>
+                            <input type="text" class="form-control" id="inputRegistroUF" placeholder="DF">
+                        </div>
+                        <div class="form-group col-md-3">
+                            <label for="inputDataRegistro">Data de emissão:</label>
+                            <input type="text" class="form-control" id="inputDataRegistro" placeholder="01/01/2023">
+                        </div>
+                      </div>
+                      <div class="form-row">
+                        <div class="form-group col-md-5">
+                            <label for="inputPIS">PIS / PASEP / NIT:</label>
+                            <input type="text" class="form-control" id="inputPIS" placeholder="">
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label for="inputDataPIS">Data de cadastramento:</label>
+                            <input type="text" class="form-control" id="inputDataPIS" placeholder="01/01/2023">
+                        </div>
+                        <div class="form-group col-md-3">
+                            <label for="inputDependentesPIS">Nº de dependentes IR:</label>
+                            <input type="text" class="form-control" id="inputDependentesPIS" placeholder="">
+                        </div>
+                      </div>
+                        <label><b>Certidão de Casamento:</b></label>
+                      <div class="form-row">
+                        <div class="form-group col-md-5">
+                            <label for="inputCartorio">Cartório:</label>
+                            <input type="text" class="form-control" id="inputCartorio" placeholder="">
+                        </div>
+                        <div class="form-group col-md-3">
+                            <label for="inputLivro">Livro:</label>
+                            <input type="text" class="form-control" id="inputLivro" placeholder="">
+                        </div>
+                        <div class="form-group col-md-1">
+                            <label for="inputFolha">Folha:</label>
+                            <input type="text" class="form-control" id="inputFolha" placeholder="">
+                        </div>
+                        <div class="form-group col-md-3">
+                            <label for="inputLocalEmissaoCartorio">Local de emissão/UF:</label>
+                            <input type="text" class="form-control" id="inputLocalEmissaoCartorio" placeholder="">
+                        </div>
+                      </div>
+                      <label><b>Conta Corrente:</b></label>
+                      <div class="form-row">
+                        <div class="form-group col-md-5">
+                            <label for="inputBanco">Banco:</label>
+                            <input type="text" class="form-control" id="inputBanco" placeholder="Banco de Brasília -  BRB">
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label for="inputAgencia">Agência:</label>
+                            <input type="text" class="form-control" id="inputAgencia" placeholder="">
+                        </div>
+                        <div class="form-group col-md-3">
+                            <label for="inputContaCorrente">Conta Corrente:</label>
+                            <input type="text" class="form-control" id="inputContaCorrente" placeholder="">
+                        </div>
+                      </div>
+                      <div class="form-row">
+                        <div class="form-group col-md-7">
+                            <label><b>Empregado Requisitado de outro órgão:</b></label>
+                            <div class="form-check">
+                                <INPUT TYPE="RADIO" NAME="OPCAO2" VALUE="op1"> Sim
+                                <INPUT TYPE="RADIO" NAME="OPCAO2" VALUE="op2"> Não
+                            </div>
+                        </div>
+                        <div class="form-group col-md-5">
+                            <label><b>Categoria funcional do órgão de origem:</b></label>
+                            <div class="form-check">
+                                <INPUT TYPE="RADIO" NAME="OPCAO3" VALUE="op1"> CLT
+                                <INPUT TYPE="RADIO" NAME="OPCAO3" VALUE="op2"> lEI 8.112/90-Estatutário
+                            </div>
+                        </div>
+                        <div class="col-auto my-1">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="autoSizingCheck2">
+                                <label class="form-check-label" for="autoSizingCheck2">Auxílio Creche</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="autoSizingCheck2">
+                                <label class="form-check-label" for="autoSizingCheck2">Vale Transporte</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="autoSizingCheck2">
+                                <label class="form-check-label" for="autoSizingCheck2">Vale Combustivel</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="autoSizingCheck2">
+                                <label class="form-check-label" for="autoSizingCheck3">Plano de Saúde</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="autoSizingCheck2" name="autoSizingCheck2">
+                                <label class="form-check-label" for="autoSizingCheck2">Vale Alimentação</label>
+                                {% if autoSizingCheck2 %}
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="autoSizingCheck2-nested" name="autoSizingCheck2-nested">
+                                    <label class="form-check-label" for="autoSizingCheck2-nested">50% Vale Refeição</label>
+                                </div>
+                                {% endif %}
+                            </div>
+                        </div>
+
+                        <!--{% if op1 is Select %}
+                        <div class="col-sm-6">
+                            <input type="email" class="form-control" id="inputOrgaoOrigem" placeholder="Órgão de Origem">
+
+                        </div>
+                        {% endif %}-->
+
+
+                      </div>
+                    </form>
+                </nav>
+
+
+
+            </div>
+        </div>
+    </div>
+
+    </main>
+    {% endblock %}
+
+{% bootstrap_javascript jquery='full' %}

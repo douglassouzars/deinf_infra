@@ -1,20 +1,54 @@
-body{
+body {
     margin: 0;
     padding: 0;
     font-family: times-new-roman;
+    background-color: #09044c;
 }
 /*TELA DE LOGIN*/
-#fundo {
+#header {
+    background-color: #92dfe4;
+    border-bottom: 10px solid #09044c;
+    border-radius: 10px 0px 0px 0px;
+    position:relative;
+    width: 100%;
+    height: 9%;
     position: absolute;
-    height:100vh;
+    text-align: center;
+    bottom:91%;
+
+}
+#header img{
+    height:100%;
+    margin-left:-90%;
+}
+
+#header h2{
+    margin-top:-55px;
+    font-size:35px;
+    color: black;
+}
+#fundo2 {
+    margin-top:72px;
+    position: absolute;
+    height:190vh;
     width:100vw;
+    opacity: 0.9;
+    background-size: cover;
+    background-color: white;
+}
+#fundo {
+    margin-top:72px;
+    position: absolute;
+    height: 90vh;
+    width: 100vw;
     background: url('../images/novacap2.png');
     opacity: 0.9;
     background-size: cover;
 }
+
 #caixa{
-    background-color: #09044c;
-    border: 8px solid #ff4800;
+    background-color: #92dfe4;
+    border: 8px solid #09044c;
     border-radius: 10px 10px 10px 10px;
     opacity: 0.9;
     position:relative;
@@ -22,7 +56,7 @@ body{
     height: 230px;
     position: absolute;
     text-align: center;
-    top:50%;
+    top:25%;
     left:50%;
     transform: translate(-50%,-50%);
 }
@@ -30,7 +64,7 @@ body{
 #caixa h1{
     margin-top: 15px;
     font-size: 32px;
-    color: white;
+    color: black;
 }
 #caixa button{
     width:100px;
@@ -46,43 +80,24 @@ body{
 }
 
 
-#header {
-    background-color: #09044c;
-    border-bottom: 8px solid #ff4800;
-    border-radius: 10px 0px 0px 0px;
-    opacity: 0.9;
-    position:relative;
-    width: 100%;
-    height: 9%;
-    position: absolute;
-    text-align: center;
-    bottom:91%;
 
-}
-#header img{
-    width:110px;
-    margin-left:-90%;
-}
-
-#header h2{
-    margin-top:-55px;
-    color: #ffffff;
-}
 
 #rodape {
-    background-color: #09044c;
-    border-top: 8px solid #ff4800;
+    background-color: #92dfe4;
+    border-top: 8px solid #09044c;
     border-radius: 10px 0px 0px 0px;
     opacity: 0.9;
     position:relative;
     width: 100%;
-    height: 9%;
+    height: 4%;
     position: absolute;
     text-align: center;
-    top:91%;
+    top:96%;
 }
 #rodape h2{
-    color: #ffffff;
+    margin-top: -1px;
+    color: black;
+    font-size: 20px;
 }
 /*_________________________________________________________________
 TELA PRINCIPAL
@@ -145,24 +160,48 @@ body{
     margin-top:1.5rem;
     margin-left:-5rem;
 }
-.btn_alterar{
-    width: 90px;
-    height: 30px;
-    margin-left: -12rem;
-    margin-top:6rem;
+.item3 {
+    display: grid;
+    grid-template-columns: 5px;
+
 
 }
-
-.btn_salvar{
+.btn_geral{
+    display: inline-block;
     width: 90px;
     height: 30px;
-    margin-top: 6rem;
-
+    font-weight: 400;
+    color: #212529;
+    text-align: center;
+    vertical-align: middle;
+    margin-left: -3rem;
+    margin-top: 4px;
+}
+.btn_alterar:first-child{
+    grid-columns: 1 /-1;
+    width: 90px;
+    height: 30px;
+    margin-left: -3rem;
+    margin-top: 1rem;
+}
+.btn_salvar:nth-child(2){
+    grid-columns: 1 /-3;
+    width: 90px;
+    height: 30px;
+    margin-top: 5px;
+    margin-left: -3rem;
+}
+.btn_sair:nth-child(3){
+    grid-columns: 1 /-3;
+    width: 90px;
+    height: 30px;
+    margin-top: 5px;
+    margin-left: -20rem;
 }
 .container{
     margin-top: 100rem;
     width:100%;
-    background-color: #86a2ab;
+    background-color: #09044c;
     margin-left: -5rem;
     margin-top:1rem;
 }
@@ -176,6 +215,7 @@ body{
     margin-left:3.5rem;
     color:white;
 }
+
 .nav-bar ul{
     color:red;
 }
@@ -192,15 +232,23 @@ body{
     padding: 14px;
     margin-left: -22px;
     margin-top: 20px;
+    position: center;
 
     /* align-items: center; */
 }
+
 .nav-bar ul li a:hover{
     background-color:white;
 
 }
+#formlink{
+    position:center;
+    margin-top:20px;
+
+}
 .nav-bar ul li img{
     width: 22px;
+    position: center;
 }
 .calendario{
     background-color:white;
@@ -242,4 +290,28 @@ body{
 
 
 }
+#solicita {
+    background-color: #86a2ab;
+    color: white;
+}
+/*_________________________________________________________________
+TELA CADASTRO
+_________________________________________________________________*/
+.painel{
+    background-color:white;
+    border-radius:7px;
+    margin-top: 20rem;
+    margin-left: 10rem;
+    width: 105%;
+    height:44rem;
 
+}
+.tela_painel {
+    background-color:white;
+    margin-top: -23%;
+    margin-left: -10%;
+    width:90vw;
+}
+.navcad{
+    margin-top: 21rem;
+}

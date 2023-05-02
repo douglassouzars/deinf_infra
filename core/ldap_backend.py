@@ -11,20 +11,31 @@ class LDAPBackend:
         search_filter = f'(&(objectClass=user)(sAMAccountName={username}))'
         conn.search(settings.LDAP_SEARCH_BASE, search_filter)
         print(f"Connection status before authentication: {conn.bound}")
+
         if not conn.entries:
             return None
         dn = conn.entries[0].entry_dn
         conn.unbind()
 
+
         # Authenticate user against LDAP
         conn = ldap3.Connection(server, user=dn, password=password, auto_bind=True)
-        print(f"Connection status after authentication: {conn.bound}")
+        print(f"Connection status after2 authentication: {conn.bound}")
         return (conn.bound)
         if not conn.bind():
             print("nao foi")
             return None
         conn.unbind()
-
+        request.session['ldap_connection'] = conn
+        return True
+    def close_connection(self, request):
+        # Fecha a conexão LDAP
+        # Verifica se o objeto de conexão LDAP está presente na sessão do usuário
+        if 'ldap_connection' in request.session:
+            conn = request.session['ldap_connection']
+            if conn.bound:
+                conn.unbind()
+            del request.session['ldap_connection']
 
 
 

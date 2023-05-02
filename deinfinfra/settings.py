@@ -151,75 +151,40 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+LOGIN_URL = '/accounts/login/'
 
-LOGIN_REDIRECT_URL = 'index'
+LOGIN_REDIRECT_URL = '/index/'
 
-LOGOUT_REDIRECT_URL = 'login'
+LOGOUT_REDIRECT_URL = '/accounts/login'
 
-#AUTHENTICATION_BACKENDS = [
-#    'core.backends.ldap_backend.LDAPBackend',
-#]
-#import ldap
-
-#server = 'ldap://10.115.1.22'
-#LDAP_SERVER = server
-#username = 'douglas.souza@NOVACAP.SEDE'
-
-#password = '15190987'
-#base_dn = 'dc=NOVACAP,dc=SEDE'
-#LDAP_DOMAIN = 'NOVACAP.SEDE'
-#LDAP_BASE_DN = base_dn
 
 AUTHENTICATION_BACKENDS = [
-    'django_auth_ldap.backend.LDAPBackend',
-    'django_python3_ldap.auth.LDAPBackend',
     'core.ldap_backend.LDAPBackend',
-
 ]
 
-
-# outras configurações do Django
-
-#AUTHENTICATION_BACKENDS = [
-#    'django_pyad.backends.PyADBackend',
-#    'django.contrib.auth.backends.ModelBackend',
-#]
 LDAP_SERVER = 'ldap://10.115.1.22'
 LDAP_PORT = 389
 LDAP_USE_SSL = False
 LDAP_BIND_DN = 'douglas.souza@NOVACAP.SEDE'
 LDAP_BIND_PASSWORD = '15190987'
 LDAP_SEARCH_BASE = 'dc=NOVACAP,dc=SEDE'
-
-#PYAD_DOMAIN = 'NOVACAP.SEDE'
-#PYAD_LDAP_URL = 'ldap://10.115.1.22'
-#PYAD_LDAP_PORT = 389
-#PYAD_LDAP_USERNAME = 'douglas.souza@NOVACAP.SEDE'
-#PYAD_LDAP_PASSWORD = '15190987'
-#PYAD_NT4_DOMAIN = 'NOVACAP'
-#try:
-#    from core.ldap_backend import PyADAuthBackend
-#    AUTHENTICATION_BACKENDS.insert(0, 'core.ldap_backend.PyADAuthBackend')
-#except ImportError:
-#    pass
-
 AUTH_LDAP_SERVER_URI = LDAP_SERVER
 AUTH_LDAP_BIND_DN = LDAP_BIND_DN
 AUTH_LDAP_BIND_PASSWORD = LDAP_BIND_PASSWORD
-
 AUTH_LDAP_USER_SEARCH_BASE = LDAP_SEARCH_BASE
-
 AUTH_LDAP_USER_SEARCH = LDAPSearch("dc=NOVACAP,dc=SEDE",
     ldap.SCOPE_SUBTREE, "(uid=%(user)s)")
-
 AUTH_LDAP_GROUP_SEARCH = LDAPSearch("dc=NOVACAP,dc=SEDE",
-    ldap.SCOPE_SUBTREE, "(objectClass=groupOfNames)"
-)
-
+    ldap.SCOPE_SUBTREE, "(objectClass=groupOfNames)")
 AUTH_LDAP_GROUP_TYPE = GroupOfNamesType()
-
 AUTH_LDAP_REQUIRE_GROUP = "dc=NOVACAP,dc=SEDE"
 AUTH_LDAP_DENY_GROUP = "dc=NOVACAP,dc=SEDE"
 
-
-
+#Configuração de e-mail
+"""
+EMAIL_HOST = 'localhost'
+EMAIL_HOST_USER = 'NO-REPLY@seudominio.com.br'
+EMAIL_PORT = 587
+EMAIL_USER_TSL = True
+EMAIL_HOST_PASSWORD = 'sua-senha'
+"""
