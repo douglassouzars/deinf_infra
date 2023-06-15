@@ -1,0 +1,90 @@
+{% load bootstrap4 %}
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>SISTEMA DEINF INFRA</title>
+    {% bootstrap_css %}
+    <link rel="stylesheet" href="{% static '../static/css/main.css' %}" />
+
+    <script src='fullcalendar/lang/pt-br.js'></script>
+</head>
+<body>
+
+    <div id="headermain2">
+        <div id="dados2">
+            <div class="headitem"><img src = "{% static '../static/images/novacap1.png' %}" alt=""/></div>
+            <div class="headitem">
+                <div id="subdados2">
+                    <div class="ite2">Nome: {{ cn }}</div>
+                    <div class="ite2">Cargo:{{ title }}</div>
+                    <div class="ite2">Setor:{{ dep }}</div>
+                    <div class="ite2">Ramal:{{ t }}</div>
+                    <div class="ite2">E-mail: {{ mail }}</div>
+                    <div class="ite2">Matrícula:{{ descricao }}</div>
+                </div>
+            </div>
+            <div class="headitem">
+                <div id="botoeshead">
+                    <form name="formLogout" id="formLogout" method="post" action='/logouts/'>
+                        <div class="itembutton"><button type="button" class="btn2 btn-light "  name="">Alterar</button></div>
+                        <div class="itembutton"><button type="button" class="btn2 btn-light"  name="">Salvar</button></div>
+                        <div class="itembutton">
+
+                        {% csrf_token %}
+                            <button class="btn2 btn-ligth"  href="{% url 'logouts' %}" type="submit" name="">Sair</button>
+
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    </div>
+        <div class="nav-bar2">
+            <ul>
+                <li>
+                    <form name="formLINK" id="formlink" method="post" action='/index/'>
+                            {% csrf_token %}
+                        <a type="submit" href="{% url 'index' %}"><img src="{% static '../static/images/house-fill.svg' %}"></a>
+                </li>
+                <li><a href="#">
+                    <img src="{% static '../static/images/calendar-date.svg' %}">
+                </a></li>
+                <li><a href="#">
+                    <img src="{% static '../static/images/bell.svg' %}">
+                </a></li>
+                <li><a href="#">
+                    <img src="{% static '../static/images/cloud-arrow-up.svg' %}">
+                </a></li>
+                <li>
+                     <form name="formLINK" id="formlink" method="post" action='/mapeamento/'>
+                            {% csrf_token %}
+                         <a type="submit" href="{% url 'mapeamento' %}"><img src="{% static '../static/images/diagram-3-fill.svg' %}"></a>
+                     </form>
+                </li>
+                <li>
+                    <form name="formLINK" id="formlink" method="post" action='/cadastro/'>
+                            {% csrf_token %}
+                                <a type="submit" href="{% url 'cadastro' %}"><img src="{% static '../static/images/envelope-at-fill.svg' %}"></a>
+                    </form>
+                </li>
+                <li><a href="#">
+                    <img src="{% static '../static/images/headset.svg' %}">
+                </a></li>
+            </ul>
+        </div>
+
+    {% block content %}
+
+    {% endblock %}
+
+
+
+<script src='fullcalendar/lang/pt-br.js'></script>
+{% bootstrap_javascript jquery='full' %}
+</body>
+</html>
+<script type="text/javascript" src="../static/js/calendar.js"></script>

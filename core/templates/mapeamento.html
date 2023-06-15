@@ -1,0 +1,44 @@
+{% extends 'home.html' %}
+{% load bootstrap4 %}
+{% load static %}
+{% block content %}
+{% bootstrap_css %}
+<link rel="stylesheet" href="{% static '../static/css/main.css' %}" />
+    <div class="cal">
+        <div class="cal">
+            <div id="calendar2">
+                <nav class="navbar navbar-light bg-light justify-content-between">
+                    <a class="navbar-brand">Pasta</a>
+                    <div class="col-auto my-1">
+
+                                    <select class="custom-select mr-sm-3" id="select-moradia" name="Tipodemoradia">
+                                        <option selected>Selecione um item...</option>
+                                        <option value="Aluguel">Aluguel</option>
+                                        <option value="Propria Quitada">Própria quitada</option>
+                                        <option value="Propria Financiada">Própria Financiada</option>
+                                        <option value="Outros">Outros</option>
+
+                                    </select>
+                    </div>
+                    <table class="table">
+                        <tbody>
+                        {% for dados in dados %}
+                        <tr>
+                            <td scope="row"><input type="checkbox" id="blankCheckbox" value="option1" aria-label="..."></td>
+                            <td scope="row">aiiiii</td>
+                            <td scope="row">{{ dados.Ferias_inicio|date:"d \d\e F \d\e Y" }}</td>
+                            <td scope="row">{{ dados.Ferias_fim|date:"d \d\e F \d\e Y" }}</td>
+                            <td scope="row">{{ dados.diferenca }} dias</td>
+                        </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </nav>
+            </div>
+        </div>
+
+
+    <script src='fullcalendar/lang/pt-br.js'></script>
+{% bootstrap_javascript jquery='full' %}
+<script type="text/javascript" src="../static/js/calendar.js"></script>
+{% endblock %}

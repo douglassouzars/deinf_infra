@@ -1,225 +1,80 @@
+{% extends 'home.html' %}
 {% load bootstrap4 %}
-<!DOCTYPE html>
-<html lang="pt-br">
-<head>
-    <meta charset="UTF-8">
-    <title>SISTEMA DEINF INFRA</title>
-    {% bootstrap_css %}
-    <link rel="stylesheet" href="../static/css/main.css" />
-
-    <script src='fullcalendar/lang/pt-br.js'></script>
-</head>
-<body>
-
-
-    <div id="headermain">
-        <div id="dados">
-            <div class="item"><img src = "../static/images/novacap1.png" alt="My Happy SVG"/></div>
-            <div class="item2">
-                <div id="subdados">
-                    <div class="item2_11">Nome: {{ cn }}</div>
-                    <div class="item2_12">Ramal:{{ t }}</div>
-                    <div class="item2_13">Setor:{{ dep }}</div>
-                    <div class="item2_21">Cargo:{{ title }}</div>
-                    <div class="item2_22">E-mail: {{ mail }}</div>
-                    <div class="item2_23">Matrícula:{{ descricao }}</div>
-                </div>
-            </div>
-            <div class="item3">
-
-                <button type="button" class="btn_alterar btn btn_geral btn-warning"  name="" value="alterar">ALTERAR</button>
-                <button type="button" class="btn_salvar btn btn_geral btn-success"  name="" value="salvar">SALVAR</button>
-                <form name="formLogout" id="formLogout" method="post" action='/logouts/'>
-                    {% csrf_token %}
-                    <input class="btn_sair btn btn_geral btn-danger"  href="{% url 'logouts' %}" type="submit" name="" value="SAIR">
+{% load static %}
+{% block content %}
+{% bootstrap_css %}
+<link rel="stylesheet" href="{% static '../static/css/main.css' %}" />
+<div class="cal">
+    <div class="calendario">
+        <div id="calendar">
+            <nav class="navbar navbar-light bg-light justify-content-between">
+                <a class="navbar-brand">Filtro</a>
+                <form class="form-inline">
+                    <input class="form-control mr-sm-2" type="search" placeholder="Data Inicial" aria-label="Search">
+                    <button class="btn3 btn-outline-success mr-sm-2" type="submit"><img
+                            src="../static/images/calendar-date.svg"></button>
+                    <input class="form-control mr-sm-2" type="search" placeholder="Data Final" aria-label="Search">
+                    <button class="btn3 btn-outline-success mr-sm-2" type="submit"><img
+                            src="../static/images/calendar-date.svg"></button>
+                    <input class="form-control mr-sm-2" type="search" placeholder="Ex.: Abono" aria-label="Search">
+                    <button class="btn3 btn-outline-success my-2 my-sm-0" type="submit"><img
+                            src="../static/images/search.svg"></button>
                 </form>
-
-            </div>
-        </div>
-    </div>
-    <div class="container">
-        <div class="nav-bar">
-            <ul>
-                <li><a href="#">
-                    <img src="../static/images/chat-dots.svg">
-
-
-                </a></li>
-                <li><a href="#">
-                    <img src="../static/images/calendar-date.svg">
-
-                </a></li>
-                <li><a href="#">
-                    <img src="../static/images/bell.svg">
-
-                </a></li>
-                <li><a href="#">
-                    <img src="../static/images/cloud-arrow-up.svg">
-
-                </a></li>
-                <li><a href="#">
-                    <img src="../static/images/diagram-3-fill.svg">
-
-                </a></li>
-                <li>
-                    <form name="formLINK" id="formlink" method="post" action='/cadastro/'>
-                            {% csrf_token %}
-                                <a type="submit" href="{% url 'cadastro' %}"><img src="../static/images/envelope-at-fill.svg"></a>
-
-
-                    </form>
-
-                </li>
-                <li><a href="#">
-                    <img src="../static/images/headset.svg">
-
-
-            </ul>
-        </div>
-        <div class="calendario">
-            <div id="calendar">
-
-                <nav class="navbar navbar-light bg-light justify-content-between">
-                    <a class="navbar-brand">Filtro</a>
-                    <form class="form-inline">
-                        <input class="form-control mr-sm-2" type="search" placeholder="Data Inicial" aria-label="Search">
-                        <button class="btn btn-outline-success mr-sm-2" type="submit"><img src="../static/images/calendar-date.svg"></button>
-                        <input class="form-control mr-sm-2" type="search" placeholder="Data Final" aria-label="Search">
-                        <button class="btn btn-outline-success mr-sm-2" type="submit"><img src="../static/images/calendar-date.svg"></button>
-                        <input class="form-control mr-sm-2" type="search" placeholder="Ex.: Abono" aria-label="Search">
-                        <button class="btn btn-outline-success my-2 my-sm-0" type="submit"><img src="../static/images/search.svg"></button>
-                    </form>
                 <table class="table">
                     <thead>
-                        <tr>
-                            <th scope="col"><input type="checkbox" id="blankCheckbox" value="option1" aria-label="..."></th>
-                            <th scope="col">Abono</th>
-                            <th scope="col">Inicio da Ferias</th>
-                            <th scope="col">Fim da Ferias</th>
-                            <th scope="col">Periodo de Ferias</th>
-                        </tr>
+                    <tr>
+                        <th scope="col"><input type="checkbox" id="blankCheckbox" value="option1" aria-label="..."></th>
+                        <th scope="col">Abono</th>
+                        <th scope="col">Inicio da Ferias</th>
+                        <th scope="col">Fim da Ferias</th>
+                        <th scope="col">Periodo de Ferias</th>
+                    </tr>
                     </thead>
                     <tbody>
-                        {% for dados in dados %}
-                        <tr>
-                            <td scope="row"><input type="checkbox" id="blankCheckbox" value="option1" aria-label="..."></td>
-                            <td scope="row">{{ dados.Abono|date:"d \d\e F \d\e Y"}}</td>
-                            <td scope="row">{{ dados.Ferias_inicio|date:"d \d\e F \d\e Y" }}</td>
-                            <td scope="row">{{ dados.Ferias_fim|date:"d \d\e F \d\e Y" }}</td>
-                            <td scope="row">{{ dados.diferenca }} dias</td>
-                        </tr>
-                        {% endfor %}
-                        {% for dados in dados %}
-                        <tr>
-                            <td scope="row"><input type="checkbox" id="blankCheckbox" value="option1" aria-label="..."></td>
-                            <td scope="row">{{ dados.Abono|date:"d \d\e F \d\e Y"}}</td>
-                            <td scope="row">{{ dados.Ferias_inicio|date:"d \d\e F \d\e Y" }}</td>
-                            <td scope="row">{{ dados.Ferias_fim|date:"d \d\e F \d\e Y" }}</td>
-                            <td scope="row">{{ dados.diferenca }} dias</td>
-                        </tr>
-                        {% endfor %}
-                        {% for dados in dados %}
-                        <tr>
-                            <td scope="row"><input type="checkbox" id="blankCheckbox" value="option1" aria-label="..."></td>
-                            <td scope="row">{{ dados.Abono|date:"d \d\e F \d\e Y"}}</td>
-                            <td scope="row">{{ dados.Ferias_inicio|date:"d \d\e F \d\e Y" }}</td>
-                            <td scope="row">{{ dados.Ferias_fim|date:"d \d\e F \d\e Y" }}</td>
-                            <td scope="row">{{ dados.diferenca }} dias</td>
-                        </tr>
-                        {% endfor %}
-                        <tr id="solicita">
-                            <td scope="row"></td>
-                            <td scope="row">Solicitar um novo Abono ou Férias</td>
-                            <td scope="row"></td>
-                            <td scope="row"></td>
-                            <td scope="row"><button class="btn btn-warning my-2 my-sm-0" type="submit"><img src="../static/images/plus-square.svg"></button></td>
-                        </tr>
+                    {% for dados in dados %}
+                    <tr>
+                        <td scope="row"><input type="checkbox" id="blankCheckbox" value="option1" aria-label="..."></td>
+                        <td scope="row">{{ dados.Abono|date:"d \d\e F \d\e Y"}}</td>
+                        <td scope="row">{{ dados.Ferias_inicio|date:"d \d\e F \d\e Y" }}</td>
+                        <td scope="row">{{ dados.Ferias_fim|date:"d \d\e F \d\e Y" }}</td>
+                        <td scope="row">{{ dados.diferenca }} dias</td>
+                    </tr>
+                    {% endfor %}
+                    {% for dados in dados %}
+                    <tr>
+                        <td scope="row"><input type="checkbox" id="blankCheckbox" value="option1" aria-label="..."></td>
+                        <td scope="row">{{ dados.Abono|date:"d \d\e F \d\e Y"}}</td>
+                        <td scope="row">{{ dados.Ferias_inicio|date:"d \d\e F \d\e Y" }}</td>
+                        <td scope="row">{{ dados.Ferias_fim|date:"d \d\e F \d\e Y" }}</td>
+                        <td scope="row">{{ dados.diferenca }} dias</td>
+                    </tr>
+                    {% endfor %}
+                    {% for dados in dados %}
+                    <tr>
+                        <td scope="row"><input type="checkbox" id="blankCheckbox" value="option1" aria-label="..."></td>
+                        <td scope="row">{{ dados.Abono|date:"d \d\e F \d\e Y"}}</td>
+                        <td scope="row">{{ dados.Ferias_inicio|date:"d \d\e F \d\e Y" }}</td>
+                        <td scope="row">{{ dados.Ferias_fim|date:"d \d\e F \d\e Y" }}</td>
+                        <td scope="row">{{ dados.diferenca }} dias</td>
+                    </tr>
+                    {% endfor %}
+                    <tr id="solicita">
+                        <td scope="row"></td>
+                        <td scope="row">Solicitar um novo Abono ou Férias</td>
+                        <td scope="row"></td>
+                        <td scope="row"></td>
+                        <td scope="row">
+                            <button class="btn btn-warning my-2 my-sm-0" type="submit"><img
+                                    src="../static/images/plus-square.svg"></button>
+                        </td>
+                    </tr>
                     </tbody>
-                </nav>
-
-
-
-                <div id="form-check">
-
-                </div>
-                <div id="form-check2">
-
-<!--
-                </div>
-                <div id="form-check3">
-                    {% if dep %}
-                    <div class="item"><input type="checkbox" id="blankCheckbox" value="option1" aria-label="..."></div>
-                    <div class="item"><h2> {{ descricao }}</h2></div>
-                    <div class="item"><h2> {{ descricao }}</h2></div>
-                    <div class="item"><h2> {{ descricao }}</h2></div>
-                    <div class="item"><h2> {{ descricao }}</h2></div>
-                    <div class="item"><h2> {{ descricao }}</h2></div>
-                    <div class="item"><h2> {{ descricao }}</h2></div>
-                    {% else %}
-
-                    {% endif %}
-                </div>
-                <div id="form-check4">
-                    {% if dep %}
-                    <div class="item"><input type="checkbox" id="blankCheckbox" value="option1" aria-label="..."></div>
-                    <div class="item"><h2> {{ descricao }}</h2></div>
-                    <div class="item"><h2> {{ descricao }}</h2></div>
-                    <div class="item"><h2> {{ descricao }}</h2></div>
-                    <div class="item"><h2> {{ descricao }}</h2></div>
-                    <div class="item"><h2> {{ descricao }}</h2></div>
-                    <div class="item"><h2> {{ descricao }}</h2></div>
-                    {% else %}
-
-                    {% endif %}
-                </div>
-                <div id="form-check5">
-                    {% if dep %}
-                    <div class="item"><input type="checkbox" id="blankCheckbox" value="option1" aria-label="..."></div>
-                    <div class="item"><h2> {{ descricao }}</h2></div>
-                    <div class="item"><h2> {{ descricao }}</h2></div>
-                    <div class="item"><h2> {{ descricao }}</h2></div>
-                    <div class="item"><h2> {{ descricao }}</h2></div>
-                    <div class="item"><h2> {{ descricao }}</h2></div>
-                    <div class="item"><h2> {{ descricao }}</h2></div>
-                    {% else %}
-
-                    {% endif %}
-                </div>
-                <div id="form-check6">
-                    {% if sn %}
-                    <div class="item"><input type="checkbox" id="blankCheckbox" value="option1" aria-label="..."></div>
-                    <div class="item"><h2> {{ descricao }}</h2></div>
-                    <div class="item"><h2> {{ descricao }}</h2></div>
-                    <div class="item"><h2> {{ descricao }}</h2></div>
-                    <div class="item"><h2> {{ descricao }}</h2></div>
-                    <div class="item"><h2> {{ descricao }}</h2></div>
-                    <div class="item"><h2> {{ descricao }}</h2></div>
-                    {% else %}
-                    {% endif %}
-                </div>
-                <div id="form-check7">
-                    {% if sn %}
-                    <div class="item"><input type="checkbox" id="blankCheckbox" value="option1" aria-label="..."></div>
-                    <div class="item"><h2> {{ descricao }}</h2></div>
-                    <div class="item"><h2> {{ descricao }}</h2></div>
-                    <div class="item"><h2> {{ descricao }}</h2></div>
-                    <div class="item"><h2> {{ descricao }}</h2></div>
-                    <div class="item"><h2> {{ descricao }}</h2></div>
-                    <div class="item"><h2> {{ descricao }}</h2></div>
-                    {% else %}
-
-                    {% endif %}
-                </div>-->
                 </table>
-            </div>
-        </div>
-        <div class="info">
-            <h1>a</h1>
+            </nav>
         </div>
     </div>
-
-
+</div>
+<script src='fullcalendar/lang/pt-br.js'></script>
 {% bootstrap_javascript jquery='full' %}
-</body>
-</html>
 <script type="text/javascript" src="../static/js/calendar.js"></script>
+{% endblock %}

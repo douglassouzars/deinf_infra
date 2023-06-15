@@ -24,6 +24,7 @@ from django_auth_ldap.config import LDAPSearch, GroupOfNamesType
 
 
 
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -70,6 +71,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    #'core.middleware.ClearCookiesMiddleware',
 ]
 
 ROOT_URLCONF = 'deinfinfra.urls'
@@ -151,18 +153,40 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-LOGIN_URL = '/accounts/login/'
+#LOGIN_URL = '/login/'
 
-LOGIN_REDIRECT_URL = '/index/'
 
-LOGOUT_REDIRECT_URL = '/accounts/login'
+#LOGIN_REDIRECT_URL = '/index/'
+
+#LOGOUT_REDIRECT_URL = '/accounts/login'
 
 
 AUTHENTICATION_BACKENDS = [
     'core.ldap_backend.LDAPBackend',
 ]
 
-LDAP_SERVER = 'ldap://10.115.1.22'
+
+LDAP_SERVER = 'ldap://SRVDOUGLAS'
+LDAP_PORT = 389
+LDAP_USE_SSL = False
+LDAP_BIND_DN = 'conexao_ldap@DOUGLAS.TESTE'
+LDAP_BIND_PASSWORD = '@teste159'
+LDAP_SEARCH_BASE = 'DC=DOUGLAS,DC=TESTE'
+AUTH_LDAP_SERVER_URI = LDAP_SERVER
+AUTH_LDAP_BIND_DN = LDAP_BIND_DN
+AUTH_LDAP_BIND_PASSWORD = LDAP_BIND_PASSWORD
+AUTH_LDAP_USER_SEARCH_BASE = LDAP_SEARCH_BASE
+AUTH_LDAP_USER_SEARCH = LDAPSearch("DC=DOUGLAS,DC=TESTE",
+    ldap.SCOPE_SUBTREE, "(uid=%(user)s)")
+AUTH_LDAP_GROUP_SEARCH = LDAPSearch("DC=DOUGLAS,DC=TESTE",
+    ldap.SCOPE_SUBTREE, "(objectClass=groupOfNames)")
+AUTH_LDAP_GROUP_TYPE = GroupOfNamesType()
+AUTH_LDAP_REQUIRE_GROUP = "DC=DOUGLAS,DC=TESTE"
+AUTH_LDAP_DENY_GROUP = "DC=DOUGLAS,DC=TESTE"
+
+
+
+"""LDAP_SERVER = 'ldap://10.115.1.22'
 LDAP_PORT = 389
 LDAP_USE_SSL = False
 LDAP_BIND_DN = 'douglas.souza@NOVACAP.SEDE'
@@ -181,10 +205,11 @@ AUTH_LDAP_REQUIRE_GROUP = "dc=NOVACAP,dc=SEDE"
 AUTH_LDAP_DENY_GROUP = "dc=NOVACAP,dc=SEDE"
 
 #Configuração de e-mail
-"""
+
 EMAIL_HOST = 'localhost'
 EMAIL_HOST_USER = 'NO-REPLY@seudominio.com.br'
 EMAIL_PORT = 587
 EMAIL_USER_TSL = True
 EMAIL_HOST_PASSWORD = 'sua-senha'
 """
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'

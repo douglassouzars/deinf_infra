@@ -1,5 +1,14 @@
 import ldap3
 from django.conf import settings
+from django.urls import reverse_lazy
+from django.http import HttpResponseRedirect
+import ldap
+from django.urls import reverse_lazy
+from django.http import HttpResponseRedirect
+
+
+
+
 
 
 
@@ -21,6 +30,8 @@ class LDAPBackend:
         # Authenticate user against LDAP
         conn = ldap3.Connection(server, user=dn, password=password, auto_bind=True)
         print(f"Connection status after2 authentication: {conn.bound}")
+        print(conn)
+
         return (conn.bound)
         if not conn.bind():
             print("nao foi")
@@ -38,4 +49,12 @@ class LDAPBackend:
             del request.session['ldap_connection']
 
 
+class CustomAccessMixin:
+    def dispatch(self, request, *args, **kwargs):
+        print(user)
+        if request.user.is_authenticated and request.user.user == 'true':
+            print("oie")
+            return super().dispatch(request, *args, **kwargs)
+        else:
+            return HttpResponseRedirect('/login/')
 

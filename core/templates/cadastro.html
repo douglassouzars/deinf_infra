@@ -1,343 +1,370 @@
-{% extends 'registration/login.html' %}
 {% load bootstrap4 %}
+<!DOCTYPE HTML>
+<html lang="pt-br" xmlns="http://www.w3.org/1999/html">
+    <head>
+        <meta charset="utf-8">
+        <title>CADASTRO</title>
+        {% bootstrap_css %}
+        <link rel="stylesheet" href="../../static/css/main.css"/>
+    </head>
+    <body>
+        <header>
+            <a id="headerc" href="{% url 'index' %}">
+                <img src = "../../static/images/novacap1.png"/>
+                <h2>Companhia Urbanizadora da Nova Capital do Brasil</h2>
+            </a>
+        </header>
 
-
-    {% block content %}
     <main>
-    <div id="fundo2">
+    <div name="fundo2">
         <div class="tela_painel">
             <div class="painel">
                 <nav class="navcad navbar-light bg-light justify-content-between">
                     <h1>Formulário de Cadastro</h1>
-                    <form>
+
+                    <form id="formLINKReal" name="formlinkReal" method="post" action="/loadcadastro/">
+
+                            {% if msg %}
+                                <div class="alert {{ class }} ">
+                                        {{ msg }}
+                                </div>
+                            {% endif %}
+
+                            {% csrf_token %}
                       <div class="form-row">
                         <div class="form-group col-md-6">
-                            <label for="inputNome">Nome Completo:</label>
-                            <input type="text" class="form-control" id="inputNome" placeholder="Nome Completo">
+                            <label for="Nome">Nome Completo:</label>
+                            <input type="text" class="form-control" name="Nome" placeholder="Nome Completo" required>
                         </div>
                         <div class="form-group col-md-2">
-                            <label for="inputTelefoneFixo">Telefone Fixo:</label>
-                            <input type="text" class="form-control" id="inputTelefoneFixo" placeholder="( )">
+                            <label for="TelefoneFixo">Telefone Fixo:</label>
+                            <input type="text" class="form-control" name="TelefoneFixo" placeholder="( )">
                         </div>
                         <div class="form-group col-md-2">
-                            <label for="inputTelefoneCelular">Telefone Celular:</label>
-                            <input type="text" class="form-control" id="inputTelefoneCelular" placeholder="( )">
+                            <label for="TelefoneCelular">Telefone Celular:</label>
+                            <input type="text" class="form-control" name="TelefoneCelular" placeholder="( )" required>
                         </div>
                         <div class="form-group col-md-2">
-                            <label for="inputTelefoneContato">Telefone Contato:</label>
-                            <input type="text" class="form-control" id="inputTelefoneContato" placeholder="( )">
+                            <label for="TelefoneContato">Telefone Contato:</label>
+                            <input type="text" class="form-control" name="TelefoneContato" placeholder="( )">
                         </div>
                       </div>
                       <div class="form-row">
                         <div class="form-group col-md-10">
-                            <label for="inputEndereco">Endereço Completo:</label>
-                            <input type="text" class="form-control" id="inputEndereco" placeholder="Setor de Áreas Públicas, Lote B S/n Sia Sul - Guará, Brasília - DF,">
+                            <label for="Endereco">Endereço Completo:</label>
+                            <input type="text" class="form-control" name="Endereco" placeholder="Setor de Áreas Públicas, Lote B S/n Sia Sul - Guará, Brasília - DF," required>
                         </div>
                         <div class="form-group col-md-2">
-                            <label for="inputCep">CEP:</label>
-                            <input type="text" class="form-control" id="inputCep" placeholder="71215-000">
+                            <label for="Cep">CEP:</label>
+                            <input type="text" class="form-control" name="Cep" placeholder="71215-000" required>
                         </div>
                       </div>
                       <div class="form-group">
                              <div class="form-row align-items-center">
                                 <div class="col-auto my-1">
-                                    <label class="mr-sm-2" for="inlineFormCustomSelect">Tipo de Moradia:</label>
-                                    <select class="custom-select mr-sm-2" id="inlineFormCustomSelect" name="tipo_moradia">
+                                    <label class="mr-sm-2" for="select-moradia">Tipo de Moradia:</label>
+                                    <select class="custom-select mr-sm-2" id="select-moradia" name="Tipodemoradia">
                                         <option selected>Selecione um item...</option>
-                                        <option value="1">Aluguel</option>
-                                        <option value="2">Própria quitada</option>
-                                        <option value="3">Própria Financiada</option>
-                                        <option value="4">Outros</option>
+                                        <option value="Aluguel">Aluguel</option>
+                                        <option value="Propria Quitada">Própria quitada</option>
+                                        <option value="Propria Financiada">Própria Financiada</option>
+                                        <option value="Outros">Outros</option>
+
                                     </select>
                                 </div>
+
+                                <div class="col-auto my-1 col-md-8" id="div-outros" style="display:none">
+                                        <label for="input-Outros">Outros:</label>
+                                        <input type="text" class="form-control" name="Outros" id="input-outros">
+                                </div>
+
                             </div>
                       </div>
-                      {% if tipo_moradia == "4" %}
-                          <div class="form-group col-md-6">
-                             <label for="inputOutros">teste:</label>
-                             <input type="email" class="form-control" id="inputOutros" name="Outros" placeholder="tet">
-                          </div>
-                      {% endif %}
                       <div class="form-row">
                         <div class="form-group col-md-4">
-                            <label for="inputEmail">E-mail:</label>
-                            <input type="email" class="form-control" id="inputEmail" placeholder="Email">
+                            <label for="Email">E-mail:</label>
+                            <input type="email" class="form-control" name="Email" placeholder="Email" required>
                         </div>
                         <div class="form-group col-md-1">
-                            <label for="inputRC">Raça/Cor:</label>
-                            <input type="text" class="form-control" id="inputRC" placeholder="Parda">
+                            <label for="RC">Raça/Cor:</label>
+                            <input type="text" class="form-control" name="RC" placeholder="Parda">
                         </div>
                         <div class="form-group col-md-2">
-                            <label for="inputTS">Tipo Sanguíneo:</label>
-                            <input type="text" class="form-control" id="inputTS" placeholder="A+">
+                            <label for="TS">Tipo Sanguíneo:</label>
+                            <input type="text" class="form-control" name="TipoSanguineo" placeholder="A+">
                         </div>
                         <div class="form-group col-md-2">
-                            <label for="inputDoador">Doador de Sangue:</label>
-                            <div class="form-check">
-                                <INPUT TYPE="RADIO" NAME="OPCAO" VALUE="op1"> Sim
-                                <INPUT TYPE="RADIO" NAME="OPCAO" VALUE="op2"> Não
+                            <label for="Doador">Doador de Sangue:</label>
+                            <div class="form-check radios">
+                                <input type="radio" name="DoadordeSangue" value="true"> Sim
+                                <input type="radio" name="DoadordeSangue" value="false"> Não
                             </div>
                         </div>
                         <div class="form-group col-md-3">
-                            <label for="inputDoador">Portador de Necessidades Especiais:</label>
+                            <label for="Portador">Portador de Necessnameades Especiais:</label>
                             <div class="form-check">
-                                <INPUT TYPE="RADIO" NAME="OPCAO1" VALUE="op1"> Sim
-                                <INPUT TYPE="RADIO" NAME="OPCAO1" VALUE="op2"> Não
+                                <input type="radio" name="Portador" value="true"> Sim
+                                <input type="radio" name="Portador" value="false"> Não
                             </div>
                         </div>
                       </div>
                       <div class="form-row">
                         <div class="form-group col-md-2">
-                            <label for="inputData">Data de Nascimento:</label>
-                            <input type="text" class="form-control" id="inputData" placeholder="01/01/2023">
+                            <label for="Data">Data de Nascimento:</label>
+                            <input type="text" class="form-control" name="DataNascimento" placeholder="01/01/2023" required>
                         </div>
                         <div class="form-group col-md-3">
-                            <label for="inputNaturalidade">Naturalidade/UF:</label>
-                            <input type="text" class="form-control" id="inputNaturalidade" placeholder="Brasiliense/DF">
+                            <label for="Naturalidade">Naturalidade/UF:</label>
+                            <input type="text" name="Naturalidade" class="form-control" placeholder="Brasiliense/DF" required>
                         </div>
                         <div class="form-group col-md-3">
-                            <label for="inputEstadoCivil">Estado Civil:</label>
-                            <input type="text" class="form-control" id="inputEstadoCivil" placeholder="Solteiro">
+                            <label for="EstadoCivil">Estado Civil:</label>
+                            <input type="text" class="form-control" name="EstadoCivil" placeholder="Solteiro" required>
                         </div>
                         <div class="form-group col-md-4">
-                            <label for="inputGrau">Grau de Instrução:</label>
-                            <input type="text" class="form-control" id="inputGrau" placeholder="Superior Completo">
+                            <label for="Grau">Grau de Instrução:</label>
+                            <input type="text" class="form-control" name="Grau" placeholder="Superior Completo" required>
                         </div>
                       </div>
                       <div class="form-row">
                         <div class="form-group col-md-7">
-                            <label for="inputNConjuge">Nome do Conjuge:</label>
-                            <input type="text" class="form-control" id="inputNConjuge" placeholder="Nome completo">
+                            <label for="NConjuge">Nome do Conjuge:</label>
+                            <input type="text" class="form-control" name="NomeConjuge" placeholder="Nome completo">
                         </div>
                         <div class="form-group col-md-5">
-                            <label for="inputGrauConjuge">Grau de Instrução do Cônjuge:</label>
-                            <input type="text" class="form-control" id="inputGrauConjuge" placeholder="">
+                            <label for="GrauConjuge">Grau de Instrução do Cônjuge:</label>
+                            <input type="text" class="form-control" name="GrauConjuge" placeholder="">
                         </div>
                       </div>
                       <label><b>Filiação:</b></label>
                       <div class="form-row">
                         <div class="form-group col-md-6">
-                            <label for="inputNPai">Nome do Pai:</label>
-                            <input type="text" class="form-control" id="inputNPai" placeholder="Nome completo">
+                            <label for="NPai">Nome do Pai:</label>
+                            <input type="text" class="form-control" name="NomePai" placeholder="Nome completo">
                         </div>
                         <div class="form-group col-md-6">
-                            <label for="inputNMae">Nome da Mãe:</label>
-                            <input type="text" class="form-control" id="inputNMae" placeholder="">
+                            <label for="NMae">Nome da Mãe:</label>
+                            <input type="text" class="form-control" name="NomeMae" placeholder="">
                         </div>
                       </div>
                       <div class="form-row">
                         <div class="form-group col-md-3">
-                            <label for="inputCPF">CPF:</label>
-                            <input type="text" class="form-control" id="inputCPF" placeholder="">
+                            <label for="CPF">CPF:</label>
+                            <input type="text" class="form-control" name="CPF" placeholder="" required>
                         </div>
                         <div class="form-group col-md-3">
-                            <label for="inputRG">RG:</label>
-                            <input type="text" class="form-control" id="inputRG" placeholder="">
+                            <label for="RG">RG:</label>
+                            <input type="text" class="form-control" name="RG" placeholder="" required>
                         </div>
                         <div class="form-group col-md-3">
-                            <label for="inputEmisssor">Org. Emissor/UF:</label>
-                            <input type="text" class="form-control" id="inputEmissor" placeholder="SSP/DF">
+                            <label for="Emisssor">Org. Emissor/UF:</label>
+                            <input type="text" class="form-control" name="Emissor" placeholder="SSP/DF" required>
                         </div>
                         <div class="form-group col-md-3">
-                            <label for="inputDataCPF">Data de emissão:</label>
-                            <input type="text" class="form-control" id="inputDataCPF" placeholder="01/01/2023">
+                            <label for="DataCPF">Data de emissão:</label>
+                            <input type="text" class="form-control" name="DataCPF" placeholder="01/01/2023" required>
                         </div>
                       </div>
                       <div class="form-row">
                         <div class="form-group col-md-2">
-                            <label for="inputReservista">Cert. Reservista:</label>
-                            <input type="text" class="form-control" id="inputReservista">
+                            <label for="Reservista">Cert. Reservista:</label>
+                            <input type="text" class="form-control" name="Reservista">
                         </div>
                         <div class="form-group col-md-2">
-                            <label for="inputSerieReservista">Série:</label>
-                            <input type="text" class="form-control" id="inputSerieReservista">
+                            <label for="SerieReservista">Série:</label>
+                            <input type="text" class="form-control" name="SerieReservista">
                         </div>
                         <div class="form-group col-md-2">
-                            <label for="inputCategoria">Categoria:</label>
-                            <input type="text" class="form-control" id="inputCategoria">
+                            <label for="Categoria">Categoria:</label>
+                            <input type="text" class="form-control" name="Categoria">
                         </div>
                         <div class="form-group col-md-2">
-                            <label for="inputRegMilitar">Reg. Militar:</label>
-                            <input type="text" class="form-control" id="inputRegMilitar">
+                            <label for="RegMilitar">Reg. Militar:</label>
+                            <input type="text" class="form-control" name="RegMilitar">
                         </div>
                         <div class="form-group col-md-2">
-                            <label for="inputOrgao">Orgão/UF:</label>
-                            <input type="text" class="form-control" id="inputOrgao">
+                            <label for="Orgao">Orgão/UF:</label>
+                            <input type="text" class="form-control" name="Orgao">
                         </div>
                         <div class="form-group col-md-2">
-                            <label for="inputDataReservista">Data de emissão:</label>
-                            <input type="text" class="form-control" id="inputDataReservista">
+                            <label for="DataReservista">Data de emissão:</label>
+                            <input type="text" class="form-control" name="DataReservista">
                         </div>
                       </div>
                       <div class="form-row">
                         <div class="form-group col-md-3">
-                            <label for="inputTitulo">Título de eleitor:</label>
-                            <input type="text" class="form-control" id="inputTitulo">
+                            <label for="Titulo">Título de eleitor:</label>
+                            <input type="text" class="form-control" name="Titulo">
                         </div>
                         <div class="form-group col-md-2">
-                            <label for="inputSecao">Seção:</label>
-                            <input type="text" class="form-control" id="inputSecao">
+                            <label for="Secao">Seção:</label>
+                            <input type="text" class="form-control" name="Secao">
                         </div>
                         <div class="form-group col-md-2">
-                            <label for="inputZona">Zona:</label>
-                            <input type="text" class="form-control" id="inputZona">
+                            <label for="Zona">Zona:</label>
+                            <input type="text" class="form-control" name="Zona">
                         </div>
                         <div class="form-group col-md-3">
-                            <label for="inputLocalEmissao">Local de emissão/UF:</label>
-                            <input type="text" class="form-control" id="inputLocalEmissao">
+                            <label for="LocalEmissao">Local de emissão/UF:</label>
+                            <input type="text" class="form-control" name="LocalEmissao">
                         </div>
                         <div class="form-group col-md-2">
-                            <label for="inputDataTitulo">Data de emissão:</label>
-                            <input type="text" class="form-control" id="inputDataTitulo">
+                            <label for="DataTitulo">Data de emissão:</label>
+                            <input type="text" class="form-control" name="DataTitulo">
                         </div>
                       </div>
                       <div class="form-row">
                         <div class="form-group col-md-5">
-                            <label for="inputCTPS">Carteira de Trabalho - CTPS:</label>
-                            <input type="text" class="form-control" id="inputCTPS" placeholder="">
+                            <label for="CTPS">Carteira de Trabalho - CTPS:</label>
+                            <input type="text" class="form-control" name="CTPS" placeholder="" required>
                         </div>
                         <div class="form-group col-md-3">
-                            <label for="inputCTPSSerie">Série:</label>
-                            <input type="text" class="form-control" id="inputCTPSSerie" placeholder="">
+                            <label for="CTPSSerie">Série:</label>
+                            <input type="text" class="form-control" name="CTPSSerie" placeholder="" required>
                         </div>
                         <div class="form-group col-md-1">
-                            <label for="inputCTPSUF">UF:</label>
-                            <input type="text" class="form-control" id="inputCTPSUF" placeholder="DF">
+                            <label for="CTPSUF">UF:</label>
+                            <input type="text" class="form-control" name="CTPSUF" placeholder="DF" required>
                         </div>
                         <div class="form-group col-md-3">
-                            <label for="inputDataCTPS">Data de emissão:</label>
-                            <input type="text" class="form-control" id="inputDataCTPS" placeholder="01/01/2023">
+                            <label for="DataCTPS">Data de emissão:</label>
+                            <input type="text" class="form-control" name="DataCTPS" placeholder="01/01/2023" required>
                         </div>
                       </div>
                       <div class="form-row">
                         <div class="form-group col-md-5">
-                            <label for="inputRegistro">Registro de Classe:</label>
-                            <input type="text" class="form-control" id="inputRegistro" placeholder="">
+                            <label for="Registro">Registro de Classe:</label>
+                            <input type="text" class="form-control" name="Registro" placeholder="">
                         </div>
                         <div class="form-group col-md-3">
-                            <label for="inputRegistroEmissor">Órgão Emissor:</label>
-                            <input type="text" class="form-control" id="inputRegistroEmissor" placeholder="">
+                            <label for="RegistroEmissor">Órgão Emissor:</label>
+                            <input type="text" class="form-control" name="RegistroEmissor" placeholder="">
                         </div>
                         <div class="form-group col-md-1">
-                            <label for="inputRegistroUF">UF:</label>
-                            <input type="text" class="form-control" id="inputRegistroUF" placeholder="DF">
+                            <label for="RegistroUF">UF:</label>
+                            <input type="text" class="form-control" name="RegistroUF" placeholder="DF">
                         </div>
                         <div class="form-group col-md-3">
-                            <label for="inputDataRegistro">Data de emissão:</label>
-                            <input type="text" class="form-control" id="inputDataRegistro" placeholder="01/01/2023">
+                            <label for="DataRegistro">Data de emissão:</label>
+                            <input type="text" class="form-control" name="DataRegistro" placeholder="01/01/2023">
                         </div>
                       </div>
                       <div class="form-row">
                         <div class="form-group col-md-5">
-                            <label for="inputPIS">PIS / PASEP / NIT:</label>
-                            <input type="text" class="form-control" id="inputPIS" placeholder="">
+                            <label for="PIS">PIS / PASEP / NIT:</label>
+                            <input type="text" class="form-control" name="Pis" placeholder="" required>
                         </div>
                         <div class="form-group col-md-4">
-                            <label for="inputDataPIS">Data de cadastramento:</label>
-                            <input type="text" class="form-control" id="inputDataPIS" placeholder="01/01/2023">
+                            <label for="DataPIS">Data de cadastramento:</label>
+                            <input type="text" class="form-control" name="DataPIS" placeholder="01/01/2023">
                         </div>
                         <div class="form-group col-md-3">
-                            <label for="inputDependentesPIS">Nº de dependentes IR:</label>
-                            <input type="text" class="form-control" id="inputDependentesPIS" placeholder="">
+                            <label for="DependentesPIS">Nº de dependentes IR:</label>
+                            <input type="text" class="form-control" name="DependentesPIS" placeholder="">
                         </div>
                       </div>
                         <label><b>Certidão de Casamento:</b></label>
                       <div class="form-row">
                         <div class="form-group col-md-5">
-                            <label for="inputCartorio">Cartório:</label>
-                            <input type="text" class="form-control" id="inputCartorio" placeholder="">
+                            <label for="Cartorio">Cartório:</label>
+                            <input type="text" class="form-control" name="Cartorio" placeholder="">
                         </div>
                         <div class="form-group col-md-3">
-                            <label for="inputLivro">Livro:</label>
-                            <input type="text" class="form-control" id="inputLivro" placeholder="">
+                            <label for="Livro">Livro:</label>
+                            <input type="text" class="form-control" name="Livro" placeholder="">
                         </div>
                         <div class="form-group col-md-1">
-                            <label for="inputFolha">Folha:</label>
-                            <input type="text" class="form-control" id="inputFolha" placeholder="">
+                            <label for="Folha">Folha:</label>
+                            <input type="text" class="form-control" name="Folha" placeholder="">
                         </div>
                         <div class="form-group col-md-3">
-                            <label for="inputLocalEmissaoCartorio">Local de emissão/UF:</label>
-                            <input type="text" class="form-control" id="inputLocalEmissaoCartorio" placeholder="">
+                            <label for="LocalEmissaoCartorio">Local de emissão/UF:</label>
+                            <input type="text" class="form-control" name="LocalEmissaoCartorio" placeholder="">
                         </div>
                       </div>
                       <label><b>Conta Corrente:</b></label>
                       <div class="form-row">
                         <div class="form-group col-md-5">
-                            <label for="inputBanco">Banco:</label>
-                            <input type="text" class="form-control" id="inputBanco" placeholder="Banco de Brasília -  BRB">
+                            <label for="Banco">Banco:</label>
+                            <input type="text" class="form-control" name="Banco" placeholder="Banco de Brasília -  BRB">
                         </div>
                         <div class="form-group col-md-4">
-                            <label for="inputAgencia">Agência:</label>
-                            <input type="text" class="form-control" id="inputAgencia" placeholder="">
+                            <label for="Agencia">Agência:</label>
+                            <input type="text" class="form-control" name="Agencia" placeholder="">
                         </div>
                         <div class="form-group col-md-3">
-                            <label for="inputContaCorrente">Conta Corrente:</label>
-                            <input type="text" class="form-control" id="inputContaCorrente" placeholder="">
+                            <label for="ContaCorrente">Conta Corrente:</label>
+                            <input type="text" class="form-control" name="ContaCorrente" placeholder="">
                         </div>
                       </div>
                       <div class="form-row">
+                          <label for="EmpregadoDeOutroOrgao"><b>Empregado Requisitado de outro órgão:</b></label>
                         <div class="form-group col-md-7">
-                            <label><b>Empregado Requisitado de outro órgão:</b></label>
                             <div class="form-check">
-                                <INPUT TYPE="RADIO" NAME="OPCAO2" VALUE="op1"> Sim
-                                <INPUT TYPE="RADIO" NAME="OPCAO2" VALUE="op2"> Não
+                                <input type="radio" name="EmpregadoDeOutroOrgao" value="true" required> Sim
+                                <input type="radio" name="EmpregadoDeOutroOrgao" value="false" required> Não
                             </div>
                         </div>
-                        <div class="form-group col-md-5">
-                            <label><b>Categoria funcional do órgão de origem:</b></label>
-                            <div class="form-check">
-                                <INPUT TYPE="RADIO" NAME="OPCAO3" VALUE="op1"> CLT
-                                <INPUT TYPE="RADIO" NAME="OPCAO3" VALUE="op2"> lEI 8.112/90-Estatutário
+                        <div class="form-group col-md-5" >
+                            <div class="form-check" id="div_CategoriaDoOrgaoOrigem" >
+                                <label><b>Categoria funcional do órgão de origem:</b></label>
+                                <input type="radio" name="CategoriaDoOrgaoOrigem" value="true"> CLT
+                                <input type="radio" name="CategoriaDoOrgaoOrigem" value="false"> lEI 8.112/90-Estatutário
                             </div>
                         </div>
                         <div class="col-auto my-1">
+                            <label><b>Benefícios:</b></label>
                             <div class="form-check">
-                                <input class="form-check-input" type="checkbox" id="autoSizingCheck2">
+                                <input class="form-check-input" type="checkbox" name="AuxilioCreche" value="1" >
                                 <label class="form-check-label" for="autoSizingCheck2">Auxílio Creche</label>
                             </div>
                             <div class="form-check">
-                                <input class="form-check-input" type="checkbox" id="autoSizingCheck2">
+                                <input class="form-check-input" type="checkbox" name="ValeTransporte"  value="1" >
                                 <label class="form-check-label" for="autoSizingCheck2">Vale Transporte</label>
                             </div>
                             <div class="form-check">
-                                <input class="form-check-input" type="checkbox" id="autoSizingCheck2">
+                                <input class="form-check-input" type="checkbox" name="ValeCombustivel" value="1" >
                                 <label class="form-check-label" for="autoSizingCheck2">Vale Combustivel</label>
                             </div>
                             <div class="form-check">
-                                <input class="form-check-input" type="checkbox" id="autoSizingCheck2">
+                                <input class="form-check-input" type="checkbox" name="PlanoDeSaude" value="1" >
                                 <label class="form-check-label" for="autoSizingCheck3">Plano de Saúde</label>
                             </div>
+                        </div>
+
+                        <div class="col-auto my-1">
+                            <label><b>Vale Alimentação:</b></label>
                             <div class="form-check">
-                                <input class="form-check-input" type="checkbox" id="autoSizingCheck2" name="autoSizingCheck2">
-                                <label class="form-check-label" for="autoSizingCheck2">Vale Alimentação</label>
-                                {% if autoSizingCheck2 %}
-                                <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" id="autoSizingCheck2-nested" name="autoSizingCheck2-nested">
-                                    <label class="form-check-label" for="autoSizingCheck2-nested">50% Vale Refeição</label>
+                                <div>
+                                    <input type="radio" id="dewey" name="ValeAlimentacao" value="true" required>
+                                    <label for="dewey">100% Vale Alimentação</label>
+                                    <br>
+                                    <input type="radio" id="dewey" name="ValeAlimentacao" value="false" required>
+                                    <label for="dewey">50% Vale Refeição com 50% Vale Alimentação</label>
                                 </div>
-                                {% endif %}
                             </div>
                         </div>
 
                         <!--{% if op1 is Select %}
                         <div class="col-sm-6">
-                            <input type="email" class="form-control" id="inputOrgaoOrigem" placeholder="Órgão de Origem">
+                            <input type="email" class="form-control" name="rgaoOrigem" placeholder="Órgão de Origem">
 
                         </div>
                         {% endif %}-->
 
 
                       </div>
+                    <input class="btn4 btn-primary btn-block fa-lg gradient-custom-2 mb-3"  type="submit" name="">
                     </form>
                 </nav>
-
-
-
             </div>
         </div>
     </div>
 
     </main>
-    {% endblock %}
+        {% bootstrap_javascript jquery='full' %}
 
-{% bootstrap_javascript jquery='full' %}
+        <script src="../../static/js/main.js"></script>
+
+    </body>
+</html>
