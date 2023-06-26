@@ -4,41 +4,83 @@
 {% block content %}
 {% bootstrap_css %}
 <link rel="stylesheet" href="{% static '../static/css/main.css' %}" />
+
+<div class="cal">
     <div class="cal">
-        <div class="cal">
-            <div id="calendar2">
-                <nav class="navbar navbar-light bg-light justify-content-between">
-                    <a class="navbar-brand">Pasta</a>
-                    <div class="col-auto my-1">
+        <div id="calendar2">
+            <nav class="navbar navbar-light bg-light justify-content-between">
+                <thead>
+                <a class="navbar-brand">Pasta</a>
 
-                                    <select class="custom-select mr-sm-3" id="select-moradia" name="Tipodemoradia">
-                                        <option selected>Selecione um item...</option>
-                                        <option value="Aluguel">Aluguel</option>
-                                        <option value="Propria Quitada">Própria quitada</option>
-                                        <option value="Propria Financiada">Própria Financiada</option>
-                                        <option value="Outros">Outros</option>
-
-                                    </select>
-                    </div>
-                    <table class="table">
-                        <tbody>
-                        {% for dados in dados %}
-                        <tr>
-                            <td scope="row"><input type="checkbox" id="blankCheckbox" value="option1" aria-label="..."></td>
-                            <td scope="row">aiiiii</td>
-                            <td scope="row">{{ dados.Ferias_inicio|date:"d \d\e F \d\e Y" }}</td>
-                            <td scope="row">{{ dados.Ferias_fim|date:"d \d\e F \d\e Y" }}</td>
-                            <td scope="row">{{ dados.diferenca }} dias</td>
-                        </tr>
+                <!-- HTML -->
+                <div class="col-auto my-1">
+                    <select class="custom-select mr-sm-3" id="pasta" name="pasta">
+                        <option selected>Selecione uma pasta...</option>
+                        {% for group_name in groups_data %}
+                            <option value="{{ group_name }}">{{ group_name }}</option>
                         {% endfor %}
-                        </tbody>
-                    </table>
-                </nav>
-            </div>
+                    </select>
+                </div>
+                </thead>
+                <table class="table">
+                    <tbody>
+                    {% for cn in cn_list %}
+                    <tr>
+                        <td scope="row"><input type="checkbox" id="blankCheckbox" value="option1" aria-label="..."></td>
+
+                        <td scope="row">{{ cn }}</td>
+                    </tr>
+                    {% endfor %}
+                    <tbody id="user-list">
+                    </tbody>
+                </table>
+
+            </nav>
         </div>
+    </div>
 
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>$(document).ready(function() {
+   $('#selected').change(function() {
+        $('#user-list tbody').remove(); // Remove todos os elementos tbody da tabela
+    });
 
-    <script src='fullcalendar/lang/pt-br.js'></script>
+    $('#pasta').change(function() {
+        var selectedGroup = $(this).val();
+        if (selectedGroup) {
+            $.ajax({
+                url: '/get_users_from_group/',
+                type: 'GET',
+                data: {'selected_group': selectedGroup},
+                success: function(response) {
+                    var cn_list = response.cn_list;
+                    var userList = $('#user-list');
+                    userList.empty(); // Limpa o conteúdo atual da lista de usuários
+
+                    // Adiciona os valores de cn_list à lista de usuários
+                    for (var i = 0; i < cn_list.length; i++) {
+                        var cn = cn_list[i];
+                        var row = $('<tr>');
+
+                        row.append($('<td>').html('<input type="checkbox" id="blankCheckbox" value="option1" aria-label="...">'));
+                        row.append($('<td>').text(cn));
+                        userList.append(row);
+                    }
+                },
+                error: function(xhr, status, error) {
+                    console.log(error);
+                }
+            });
+        }
+    });
+});</script>
+
+    <!-- Exibir a lista de usuários -->
+    <div id="user-list"></div>
+</div>
+
+<script src='fullcalendar/lang/pt-br.js'></script>
 {% bootstrap_javascript jquery='full' %}
 <script type="text/javascript" src="../static/js/calendar.js"></script>
+
 {% endblock %}

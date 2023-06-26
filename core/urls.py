@@ -1,10 +1,10 @@
 from django.urls import path, include
-from .views import logouts , cadastro, loadcadastro, index, loadlogin, mapeamento
+from .views import logouts , cadastro, loadcadastro, index, loadlogin, mapeamento, get_users_from_group
 #from .views import LoadloginView
 from django.contrib.auth import views as auth_views
 from django.views.generic.base import  TemplateView
 from django.contrib.auth import login , logout
-
+from core import views
 
 
 urlpatterns = [
@@ -18,6 +18,7 @@ urlpatterns = [
     path('reset/done/', auth_views.PasswordResetCompleteView.as_view(), name='password_reset_complete'),
     path('cadastro/', cadastro, name='cadastro'),
     path('loadcadastro/',loadcadastro, name='loadcadastro'),
-    path('mapeamento/', mapeamento, name='mapeamento')
+    path('mapeamento/', mapeamento, name='mapeamento'),
+    path('get_users_from_group/', views.get_users_from_group, name='get_users_from_group'),
 
 ]

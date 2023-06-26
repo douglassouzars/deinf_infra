@@ -42,7 +42,7 @@ def loadlogin(request):
             if bound is True:
                 print(bound, 'b')
                 request.session['bound'] = bound
-                return index(request)  # Pass 'bound' as a parameter to the index view
+                return redirect('/index/')  # Pass 'bound' as a parameter to the index view
             else:
                 return redirect('/')
         if request.POST.get('action') == 'Cadastrar':
@@ -139,8 +139,9 @@ def index(request):
 
             dados = Dados.objects.filter(Login=name)
             for dado in dados:
-                diferenca = (dado.Ferias_fim - dado.Ferias_inicio).days
-                dado.diferenca = diferenca
+                pass
+                #diferenca = (dado.Ferias_fim - dado.Ferias_inicio).days
+                #dado.diferenca = diferenca
             context2 = {
                 'dados': dados
             }
@@ -197,223 +198,92 @@ def cadastro(request):
     else:
         return redirect('/')
 
+import urllib.parse
+import re
 
-def loadcadastro(request):
-    bound = request.session.get('bound')  # Retrieve the 'bound' value from the session
-    print("na index", bound)
-    if bound is True:
-        print("lele")
-        form = CadastroForm(request.POST)
-    #data = {}
-        if request.method == 'POST':
-            Nome = request.POST.get('Nome')
-            TelefoneFixo = request.POST.get('TelefoneFixo')
-            TelefoneCelular = request.POST.get('TelefoneCelular')
-            TelefoneContato = request.POST.get('TelefoneContato')
-            Endereco = request.POST.get('Endereco')
-            Cep = request.POST.get('Cep')
-            Tipodemoradia = request.POST.get('Tipodemoradia')
-            Outros = request.POST.get('Outros')
-            Email = request.POST.get('Email')
-            RC = request.POST.get('RC')
-            TipoSanguineo = request.POST.get('TipoSanguineo')
-            DoadordeSangue = request.POST.get('DoadordeSangue')
-            Portador = request.POST.get('Portador')
-            DataNascimento = request.POST.get('DataNascimento')
-            Naturalidade = request.POST.get('Naturalidade')
-            EstadoCivil = request.POST.get('EstadoCivil')
-            Grau = request.POST.get('Grau')
-            NomeConjuge = request.POST.get('NomeConjuge')
-            GrauConjuge = request.POST.get('GrauConjuge')
-            NomePai = request.POST.get('NomePai')
-            NomeMae = request.POST.get('NomeMae')
-            CPF = request.POST.get('CPF')
-            RG = request.POST.get('RG')
-            Emissor = request.POST.get('Emissor')
-            DataCPF = request.POST.get('DataCPF')
-            Reservista = request.POST.get('Reservista')
-            SerieReservista = request.POST.get('SerieReservista')
-            Categoria = request.POST.get('Categoria')
-            RegMilitar = request.POST.get('RegMilitar')
-            Orgao = request.POST.get('Orgao')
-            DataReservista = request.POST.get('DataReservista')
-            Titulo = request.POST.get('Titulo')
-            Secao = request.POST.get('Secao')
-            Zona = request.POST.get('Zona')
-            LocalEmissao = request.POST.get('LocalEmissao')
-            DataTitulo = request.POST.get('DataTitulo')
-            CTPS = request.POST.get('CTPS')
-            CTPSSerie = request.POST.get('CTPSSerie')
-            CTPSUF = request.POST.get('CTPSUF')
-            DataCTPS = request.POST.get('DataCTPS')
-            Registro = request.POST.get('Registro')
-            RegistroEmissor = request.POST.get('RegistroEmissor')
-            RegistroUF = request.POST.get('RegistroUF')
-            DataRegistro = request.POST.get('DataRegistro')
-            Pis = request.POST.get('Pis')
-            DataPIS = request.POST.get('DataPIS')
-            DependentesPIS = request.POST.get('DependentesPIS')
-            Cartorio = request.POST.get('Cartorio')
-            Livro = request.POST.get('Livro')
-            Folha = request.POST.get('Folha')
-            LocalEmissaoCartorio = request.POST.get('LocalEmissaoCartorio')
-            Banco = request.POST.get('Banco')
-            Agencia = request.POST.get('Agencia')
-            ContaCorrente = request.POST.get('ContaCorrente')
-            EmpregadoDeOutroOrgao = request.POST.get('EmpregadoDeOutroOrgao')
-            CategoriaDoOrgaoOrigem = request.POST.get('CategoriaDoOrgaoOrigem')
-            AuxilioCreche = request.POST.get('AuxilioCreche')
-            ValeTransporte = request.POST.get('ValeTransporte')
-            ValeCombustivel = request.POST.get('ValeCombustivel')
-            PlanoDeSaude = request.POST.get('PlanoDeSaude')
-            ValeAlimentacao = request.POST.get('ValeAlimentacao')
-            auxilio_creche = request.POST.get('AuxilioCreche', False) == '1'
-            vale_transporte = request.POST.get('ValeTransporte', False) == '1'
-            vale_combustivel = request.POST.get('ValeCombustive', False) == '1'
-            PlanoDeSaude = request.POST.get('PlanoDeSaude', False) == '1'
-            vale_alimentacao = request.POST.get('ValeAlimentacao')
-            print(request.POST)
 
-            if form.is_valid():
-                if Tipodemoradia == 'Selecione um item...':
-                    Tipodemoradia = None
-                else:
-                    Tipodemoradia = Tipodemoradia
-                if DoadordeSangue == 'true':
-                        DoadordeSangue = True
-                elif DoadordeSangue == 'false':
-                        DoadordeSangue = False
-                else:
-                        DoadordeSangue = None
-                if Portador == 'true':
-                        Portador = True
-                elif Portador == 'false':
-                        Portador = False
-                else:
-                        Portador = None
-                if DataNascimento:
-                    data_nascimento = datetime.strptime(DataNascimento, '%d/%m/%Y').strftime('%Y-%m-%d')
-                if DataCPF:
-                    data_cpf = datetime.strptime(DataCPF, '%d/%m/%Y').strftime('%Y-%m-%d')
-                if DataReservista:
-                    data_reservista = datetime.strptime(DataReservista, '%d/%m/%Y').strftime('%Y-%m-%d')
-                else:
-                    data_reservista = None
-                if DataTitulo:
-                    data_titulo = datetime.strptime(DataTitulo, '%d/%m/%Y').strftime('%Y-%m-%d')
-                else:
-                    data_titulo = None
-                if DataCTPS:
-                    data_ctps = datetime.strptime(DataCTPS, '%d/%m/%Y').strftime('%Y-%m-%d')
-                if DataRegistro:
-                    data_registro = datetime.strptime(DataRegistro, '%d/%m/%Y').strftime('%Y-%m-%d')
-                else:
-                    data_registro = None
-                if DataPIS:
-                    data_pis = datetime.strptime(DataPIS, '%d/%m/%Y').strftime('%Y-%m-%d')
-                else:
-                    data_pis = None
-                if EmpregadoDeOutroOrgao == 'false' :
-                    EmpregadoDeOutroOrgao = False
-                elif EmpregadoDeOutroOrgao == 'true' :
-                    EmpregadoDeOutroOrgao = True
-                else:
-                    EmpregadoDeOutroOrgao= None
-                if ValeAlimentacao == 'false':
-                    ValeAlimentacao = False
-                elif ValeAlimentacao == 'true':
-                    ValeAlimentacao = True
-                else:
-                    ValeAlimentacao = None
-                if AuxilioCreche is True:
-                    AuxilioCreche = True
-                else:
-                    AuxilioCreche = False
-                if ValeTransporte is True:
-                    ValeTransporte = True
-                else:
-                    ValeTransporte = False
-                if ValeCombustivel is True:
-                    ValeCombustivel = True
-                else:
-                    ValeCombustivel = False
-                if PlanoDeSaude is True:
-                    PlanoDeSaude = True
-                else:
-                    PlanoDeSaude = False
+"""def get_users_from_group(request):
+    print("vish")
+    selected_group = request.GET.get('selected_group')  # Obtém o grupo selecionado do request.GET
+    # Configurações de conexão LDAP
+    server = 'ldap://SRVDOUGLAS'
+    username = 'conexao_ldap@DOUGLAS.TESTE'
+    password = '@teste159'
+    base_dn = 'OU=USUARIOS,OU=ACCOUNT,OU=ACCOUNT AND GROUPS,DC=DOUGLAS,DC=TESTE'
 
-                        # Salvar os valores no banco de dados
-                cadastro = Cadastro.objects.create(
-                    Nome=Nome,
-                    TelefoneFixo=TelefoneFixo,
-                    TelefoneCelular=TelefoneCelular ,
-                    TelefoneContato=TelefoneContato,
-                    Endereco=Endereco,
-                    Cep=Cep,
-                    Tipodemoradia=Tipodemoradia,
-                    Outros=Outros,
-                    Email=Email,
-                    RC=RC,
-                    TipoSanguineo=TipoSanguineo,
-                    DoadordeSangue=DoadordeSangue,
-                    Portador=Portador,
-                    DataNascimento=data_nascimento,
-                    Naturalidade=Naturalidade,
-                    EstadoCivil=EstadoCivil,
-                    Grau=Grau,
-                    NomeConjuge=NomeConjuge,
-                    GrauConjuge=GrauConjuge,
-                    NomePai=NomePai,
-                    NomeMae=NomeMae,
-                    CPF=CPF,
-                    RG=RG,
-                    Emissor=Emissor,
-                    DataCPF=data_cpf,
-                    Reservista=Reservista,
-                    SerieReservista=SerieReservista,
-                    Categoria=Categoria,
-                    RegMilitar=RegMilitar,
-                    Orgao=Orgao,
-                    DataReservista=data_reservista,
-                    Titulo=Titulo,
-                    Secao=Secao,
-                    Zona=Zona,
-                    LocalEmissao=LocalEmissao,
-                    DataTitulo=data_titulo,
-                    CTPS=CTPS,
-                    CTPSSerie=CTPSSerie,
-                    CTPSUF=CTPSUF,
-                    DataCTPS=data_ctps,
-                    Registro=Registro,
-                    RegistroEmissor=RegistroEmissor,
-                    RegistroUF=RegistroUF,
-                    DataRegistro=data_registro,
-                    Pis=Pis,
-                    DataPIS=data_pis,
-                    DependentesPIS=DependentesPIS,
-                    Cartorio=Cartorio,
-                    Livro=Livro,
-                    Folha=Folha,
-                    LocalEmissaoCartorio=LocalEmissaoCartorio,
-                    Banco=Banco,
-                    Agencia=Agencia,
-                    ContaCorrente=ContaCorrente,
-                    EmpregadoDeOutroOrgao=EmpregadoDeOutroOrgao,
-                    CategoriaDoOrgaoOrigem=CategoriaDoOrgaoOrigem,
-                    AuxilioCreche=AuxilioCreche,
-                    ValeTransporte=ValeTransporte,
-                    ValeCombustivel=ValeCombustivel,
-                    PlanoDeSaude=PlanoDeSaude,
-                    ValeAlimentacao=ValeAlimentacao,
-                )
-                cadastro.save()
-                return HttpResponse(f"SALVO")
-            else:
-                return HttpResponse(f"NAO VALIDO")
-        return redirect('/cadastro/')
-    else:
-        return redirect('/')
+    # Inicializa a conexão LDAP
+    conn = ldap.initialize(server)
+    conn.simple_bind_s(username, password)
 
+    # Define o filtro para obter os membros do grupo selecionado
+    search_filter = f'(&(objectCategory=person)(memberOf=CN={selected_group},{base_dn}))'
+    attributes = ['cn', 'mail', 'description', 'sn', 'objectCategory', 'userAccountControl', 'displayName',
+                  'memberOf', 'title', 'department']
+
+    # Realiza a pesquisa LDAP para obter os membros do grupo
+    results = conn.search_s(base_dn, ldap.SCOPE_SUBTREE, search_filter, attributes)
+
+    # Processa os resultados e obtém a lista de usuários
+    users_list = []
+    for dn, entry in results:
+        cn = entry.get('cn', [b''])[0].decode()
+        users_list.append(cn)
+        print(cn)
+
+return JsonResponse({'users': users_list})
+"""
+
+import json
+
+def get_users_from_group(request):
+    #selected_group = 'DEINF'
+    selected_group = request.GET.get('selected_group')  # Obtém o grupo selecionado do request.GET
+    print(selected_group)
+
+    group_cn2 = f'GGRP_USERS_{selected_group}_READ'
+    group_cn = group_cn2
+    group_filter = f"(cn={group_cn})"
+    print(group_cn)
+    server = 'ldap://SRVDOUGLAS'
+    username = 'conexao_ldap@DOUGLAS.TESTE'
+    password = '@teste159'
+    base_dn = 'OU=FILE SERVER,OU=GROUPS,OU=ACCOUNT AND GROUPS,DC=DOUGLAS,DC=TESTE'
+    group_attributes = ['member']
+
+    ldap.set_option(ldap.OPT_REFERRALS, 0)
+    ldap.set_option(ldap.OPT_PROTOCOL_VERSION, 3)
+    ldap.set_option(ldap.OPT_SIZELIMIT, 0)
+
+    conn = ldap.initialize(server)
+    conn.simple_bind_s(username, password)
+
+    group_results = conn.search_s(base_dn, ldap.SCOPE_SUBTREE, group_filter, group_attributes)
+
+    if group_results:
+        group_entry = group_results[0][1]
+        members = group_entry.get('member', [])
+        padrao = r"CN=(.*?),OU=USUARIOS"
+        cn_list = []
+        for member in members:
+            member_dn = member.decode('utf-8')
+            matches = re.findall(padrao, member_dn)
+
+            if matches:
+                cn = matches[0]
+                cn_list.append(cn)
+
+        response_data = {
+            'cn_list': cn_list
+        }
+        print(response_data)
+        return HttpResponse(json.dumps(response_data), content_type='application/json')
+
+    # Converter members para lista de strings
+
+
+
+
+#members = get_users_from_group(selecionado)
 
 def mapeamento(request):
     bound = request.session.get('bound')  # Retrieve the 'bound' value from the session
@@ -425,21 +295,17 @@ def mapeamento(request):
         username = 'conexao_ldap@DOUGLAS.TESTE'
         password = '@teste159'
         base_dn = 'OU=USUARIOS,OU=ACCOUNT,OU=ACCOUNT AND GROUPS,DC=DOUGLAS,DC=TESTE'
-
         ldap.set_option(ldap.OPT_REFERRALS, 0)
         ldap.set_option(ldap.OPT_PROTOCOL_VERSION, 3)
         ldap.set_option(ldap.OPT_SIZELIMIT, 0)
-
         conn = ldap.initialize(server)
         conn.simple_bind_s(username, password)
         name = request.session.get('nome')
-
         search_filter = f"sAMAccountName={name}"
         attributes = ['cn', 'mail', 'description', 'sn', 'objectCategory', 'userAccountControl', 'displayName',
                   'memberOf', 'title', 'department']
-
         results = conn.search_s(base_dn, ldap.SCOPE_SUBTREE, search_filter, attributes)
-        print("ai")
+
     for dn, entry in results:
         context = {}
         context['cn'] = entry.get('cn', [b''])[0].decode()
@@ -453,19 +319,257 @@ def mapeamento(request):
         context['title'] = entry.get('title', [b''])[0].decode()
         context['dep'] = entry.get('department', [b''])[0].decode()
 
-        dados = Dados.objects.filter(Login=name)
-        for dado in dados:
-            diferenca = (dado.Ferias_fim - dado.Ferias_inicio).days
-            dado.diferenca = diferenca
-        context2 = {
-            'dados': dados
-        }
-        context.update(context2)
-        bound = True
-        return render(request, 'mapeamento.html', context)
-    else:
-        return redirect('/index/')
-    return bound
+        current_dn = context['m']
+        components = current_dn.split(',')
+        components = components[1:]
+        base_dn_final = ','.join(components)
+        print(base_dn_final)
+        result = conn.search_s(base_dn_final, ldap.SCOPE_SUBTREE, '(objectClass=group)')
+        groups = [entry[1] for entry in result]
+
+        unique_categories = set()
+        for group in groups:
+            group_name = group['cn'][0].decode('utf-8')
+            category = group_name.split("_")[2]  # Extrai o terceiro elemento separado por "_"
+            unique_categories.add(category)
+
+        context['groups_data'] = unique_categories
+        dados = Dados.objects.filter(Login=name).values('Nome', 'CargoCodigo', 'FuncaoCodigo', 'LotacaoCod')
+        dados2 = Dados.objects.filter(Login=name, FuncaoCodigo='1001')
+
+        if dados2.exists():
+            dados = Dados.objects.filter(Login=name).values('Nome', 'CargoCodigo', 'FuncaoCodigo', 'LotacaoCod')
+            lotacao_cod = dados[0]['LotacaoCod']
+
+            context2 = {
+                'dados': dados
+            }
+
+            context.update(context2)
+            bound = True
+            return render(request, 'mapeamento.html', context)
+            # Redirecionar para a página mapeamento.html se a FuncaoCodigo for igual a '001'
+
+        else:
+            # Redirecionar para a página index.html se a FuncaoCodigo não for igual a '001'
+            return redirect('/index/')
+        return bound
+
+def loadcadastro(request):
+        bound = request.session.get('bound')  # Retrieve the 'bound' value from the session
+        print("na index", bound)
+        if bound is True:
+            print("lele")
+            form = CadastroForm(request.POST)
+            # data = {}
+            if request.method == 'POST':
+                Nome = request.POST.get('Nome')
+                TelefoneFixo = request.POST.get('TelefoneFixo')
+                TelefoneCelular = request.POST.get('TelefoneCelular')
+                TelefoneContato = request.POST.get('TelefoneContato')
+                Endereco = request.POST.get('Endereco')
+                Cep = request.POST.get('Cep')
+                Tipodemoradia = request.POST.get('Tipodemoradia')
+                Outros = request.POST.get('Outros')
+                Email = request.POST.get('Email')
+                RC = request.POST.get('RC')
+                TipoSanguineo = request.POST.get('TipoSanguineo')
+                DoadordeSangue = request.POST.get('DoadordeSangue')
+                Portador = request.POST.get('Portador')
+                DataNascimento = request.POST.get('DataNascimento')
+                Naturalidade = request.POST.get('Naturalidade')
+                EstadoCivil = request.POST.get('EstadoCivil')
+                Grau = request.POST.get('Grau')
+                NomeConjuge = request.POST.get('NomeConjuge')
+                GrauConjuge = request.POST.get('GrauConjuge')
+                NomePai = request.POST.get('NomePai')
+                NomeMae = request.POST.get('NomeMae')
+                CPF = request.POST.get('CPF')
+                RG = request.POST.get('RG')
+                Emissor = request.POST.get('Emissor')
+                DataCPF = request.POST.get('DataCPF')
+                Reservista = request.POST.get('Reservista')
+                SerieReservista = request.POST.get('SerieReservista')
+                Categoria = request.POST.get('Categoria')
+                RegMilitar = request.POST.get('RegMilitar')
+                Orgao = request.POST.get('Orgao')
+                DataReservista = request.POST.get('DataReservista')
+                Titulo = request.POST.get('Titulo')
+                Secao = request.POST.get('Secao')
+                Zona = request.POST.get('Zona')
+                LocalEmissao = request.POST.get('LocalEmissao')
+                DataTitulo = request.POST.get('DataTitulo')
+                CTPS = request.POST.get('CTPS')
+                CTPSSerie = request.POST.get('CTPSSerie')
+                CTPSUF = request.POST.get('CTPSUF')
+                DataCTPS = request.POST.get('DataCTPS')
+                Registro = request.POST.get('Registro')
+                RegistroEmissor = request.POST.get('RegistroEmissor')
+                RegistroUF = request.POST.get('RegistroUF')
+                DataRegistro = request.POST.get('DataRegistro')
+                Pis = request.POST.get('Pis')
+                DataPIS = request.POST.get('DataPIS')
+                DependentesPIS = request.POST.get('DependentesPIS')
+                Cartorio = request.POST.get('Cartorio')
+                Livro = request.POST.get('Livro')
+                Folha = request.POST.get('Folha')
+                LocalEmissaoCartorio = request.POST.get('LocalEmissaoCartorio')
+                Banco = request.POST.get('Banco')
+                Agencia = request.POST.get('Agencia')
+                ContaCorrente = request.POST.get('ContaCorrente')
+                EmpregadoDeOutroOrgao = request.POST.get('EmpregadoDeOutroOrgao')
+                CategoriaDoOrgaoOrigem = request.POST.get('CategoriaDoOrgaoOrigem')
+                AuxilioCreche = request.POST.get('AuxilioCreche')
+                ValeTransporte = request.POST.get('ValeTransporte')
+                ValeCombustivel = request.POST.get('ValeCombustivel')
+                PlanoDeSaude = request.POST.get('PlanoDeSaude')
+                ValeAlimentacao = request.POST.get('ValeAlimentacao')
+                auxilio_creche = request.POST.get('AuxilioCreche', False) == '1'
+                vale_transporte = request.POST.get('ValeTransporte', False) == '1'
+                vale_combustivel = request.POST.get('ValeCombustive', False) == '1'
+                PlanoDeSaude = request.POST.get('PlanoDeSaude', False) == '1'
+                vale_alimentacao = request.POST.get('ValeAlimentacao')
+                print(request.POST)
+
+                if form.is_valid():
+                    if Tipodemoradia == 'Selecione um item...':
+                        Tipodemoradia = None
+                    else:
+                        Tipodemoradia = Tipodemoradia
+                    if DoadordeSangue == 'true':
+                        DoadordeSangue = True
+                    elif DoadordeSangue == 'false':
+                        DoadordeSangue = False
+                    else:
+                        DoadordeSangue = None
+                    if Portador == 'true':
+                        Portador = True
+                    elif Portador == 'false':
+                        Portador = False
+                    else:
+                        Portador = None
+                    if DataNascimento:
+                        data_nascimento = datetime.strptime(DataNascimento, '%d/%m/%Y').strftime('%Y-%m-%d')
+                    if DataCPF:
+                        data_cpf = datetime.strptime(DataCPF, '%d/%m/%Y').strftime('%Y-%m-%d')
+                    if DataReservista:
+                        data_reservista = datetime.strptime(DataReservista, '%d/%m/%Y').strftime('%Y-%m-%d')
+                    else:
+                        data_reservista = None
+                    if DataTitulo:
+                        data_titulo = datetime.strptime(DataTitulo, '%d/%m/%Y').strftime('%Y-%m-%d')
+                    else:
+                        data_titulo = None
+                    if DataCTPS:
+                        data_ctps = datetime.strptime(DataCTPS, '%d/%m/%Y').strftime('%Y-%m-%d')
+                    if DataRegistro:
+                        data_registro = datetime.strptime(DataRegistro, '%d/%m/%Y').strftime('%Y-%m-%d')
+                    else:
+                        data_registro = None
+                    if DataPIS:
+                        data_pis = datetime.strptime(DataPIS, '%d/%m/%Y').strftime('%Y-%m-%d')
+                    else:
+                        data_pis = None
+                    if EmpregadoDeOutroOrgao == 'false':
+                        EmpregadoDeOutroOrgao = False
+                    elif EmpregadoDeOutroOrgao == 'true':
+                        EmpregadoDeOutroOrgao = True
+                    else:
+                        EmpregadoDeOutroOrgao = None
+                    if ValeAlimentacao == 'false':
+                        ValeAlimentacao = False
+                    elif ValeAlimentacao == 'true':
+                        ValeAlimentacao = True
+                    else:
+                        ValeAlimentacao = None
+                    if AuxilioCreche is True:
+                        AuxilioCreche = True
+                    else:
+                        AuxilioCreche = False
+                    if ValeTransporte is True:
+                        ValeTransporte = True
+                    else:
+                        ValeTransporte = False
+                    if ValeCombustivel is True:
+                        ValeCombustivel = True
+                    else:
+                        ValeCombustivel = False
+                    if PlanoDeSaude is True:
+                        PlanoDeSaude = True
+                    else:
+                        PlanoDeSaude = False
+
+                        # Salvar os valores no banco de dados
+                    cadastro = Cadastro.objects.create(
+                        Nome=Nome,
+                        TelefoneFixo=TelefoneFixo,
+                        TelefoneCelular=TelefoneCelular,
+                        TelefoneContato=TelefoneContato,
+                        Endereco=Endereco,
+                        Cep=Cep,
+                        Tipodemoradia=Tipodemoradia,
+                        Outros=Outros,
+                        Email=Email,
+                        RC=RC,
+                        TipoSanguineo=TipoSanguineo,
+                        DoadordeSangue=DoadordeSangue,
+                        Portador=Portador,
+                        DataNascimento=data_nascimento,
+                        Naturalidade=Naturalidade,
+                        EstadoCivil=EstadoCivil,
+                        Grau=Grau,
+                        NomeConjuge=NomeConjuge,
+                        GrauConjuge=GrauConjuge,
+                        NomePai=NomePai,
+                        NomeMae=NomeMae,
+                        CPF=CPF,
+                        RG=RG,
+                        Emissor=Emissor,
+                        DataCPF=data_cpf,
+                        Reservista=Reservista,
+                        SerieReservista=SerieReservista,
+                        Categoria=Categoria,
+                        RegMilitar=RegMilitar,
+                        Orgao=Orgao,
+                        DataReservista=data_reservista,
+                        Titulo=Titulo,
+                        Secao=Secao,
+                        Zona=Zona,
+                        LocalEmissao=LocalEmissao,
+                        DataTitulo=data_titulo,
+                        CTPS=CTPS,
+                        CTPSSerie=CTPSSerie,
+                        CTPSUF=CTPSUF,
+                        DataCTPS=data_ctps,
+                        Registro=Registro,
+                        RegistroEmissor=RegistroEmissor,
+                        RegistroUF=RegistroUF,
+                        DataRegistro=data_registro,
+                        Pis=Pis,
+                        DataPIS=data_pis,
+                        DependentesPIS=DependentesPIS,
+                        Cartorio=Cartorio,
+                        Livro=Livro,
+                        Folha=Folha,
+                        LocalEmissaoCartorio=LocalEmissaoCartorio,
+                        Banco=Banco,
+                        Agencia=Agencia,
+                        ContaCorrente=ContaCorrente,
+                        EmpregadoDeOutroOrgao=EmpregadoDeOutroOrgao,
+                        CategoriaDoOrgaoOrigem=CategoriaDoOrgaoOrigem,
+                        AuxilioCreche=AuxilioCreche,
+                        ValeTransporte=ValeTransporte,
+                        ValeCombustivel=ValeCombustivel,
+                        PlanoDeSaude=PlanoDeSaude,
+                        ValeAlimentacao=ValeAlimentacao,
+                    )
+                    cadastro.save()
+                    return HttpResponse(f"SALVO")
+                else:
+                    return HttpResponse(f"NAO VALIDO")
+            return redirect('/cadastro/')
+        else:
+            return redirect('/')
 
     #return render(request, 'cadastro.html')
 #class CadastroView(FormView):
