@@ -234,6 +234,55 @@ return JsonResponse({'users': users_list})
 """
 
 import json
+def add_user_to_group(request):
+    if request.method == 'POST':
+        user = request.POST.get('user')  # Obtém o nome do usuário do POST
+        selected_group = request.POST.get('group')  # Obtém o grupo selecionado do POST
+
+        server = 'ldap://SRVDOUGLAS'
+        username = 'conexao_ldap@DOUGLAS.TESTE'
+        password = '@teste159'
+        base_dn = 'OU=GRUPOS,OU=ACCOUNT,OU=ACCOUNT AND GROUPS,DC=DOUGLAS,DC=TESTE'
+
+        conn = ldap.initialize(server)
+        conn.simple_bind_s(username, password)
+
+        user_dn = f'CN={user},{base_dn}'
+        group_cn = f'GGRP_USERS_{selected_group}_READ'
+        group_dn = f'CN={group_cn},{base_dn}'
+
+        mod_attrs = [(ldap.MOD_ADD, 'member', user_dn)]
+        conn.modify_s(group_dn, mod_attrs)
+
+        return HttpResponse('Usuário adicionado ao grupo com sucesso.')
+
+    return HttpResponse('Método de requisição inválido.')
+def get_all_users(request):
+    server = 'ldap://SRVDOUGLAS'
+    username = 'conexao_ldap@DOUGLAS.TESTE'
+    password = '@teste159'
+    base_dn = 'OU=USUARIOS,OU=ACCOUNT,OU=ACCOUNT AND GROUPS,DC=DOUGLAS,DC=TESTE'
+
+    conn = ldap.initialize(server)
+    conn.simple_bind_s(username, password)
+
+    search_filter = '(objectClass=user)'
+    attributes = ['cn']
+
+    results = conn.search_s(base_dn, ldap.SCOPE_SUBTREE, search_filter, attributes)
+    users = []
+    for dn, entry in results:
+        user = {}
+        user['cn'] = entry.get('cn', [b''])[0].decode('utf-8', errors='ignore')
+        users.append(user)
+
+    response_data = {
+        'users': users
+    }
+    json_response = json.dumps(response_data)
+
+    return HttpResponse(json_response, content_type='application/json')
+
 
 def get_users_from_group(request):
     #selected_group = 'DEINF'
@@ -320,6 +369,7 @@ def mapeamento(request):
         context['dep'] = entry.get('department', [b''])[0].decode()
 
         current_dn = context['m']
+        print("uiui",current_dn)
         components = current_dn.split(',')
         components = components[1:]
         base_dn_final = ','.join(components)
@@ -330,9 +380,12 @@ def mapeamento(request):
         unique_categories = set()
         for group in groups:
             group_name = group['cn'][0].decode('utf-8')
-            category = group_name.split("_")[2]  # Extrai o terceiro elemento separado por "_"
-            unique_categories.add(category)
+            #category = group_name.split("_")[2]  # Extrai o terceiro elemento separado por "_"
+            category = "_".join(group_name.split("_")[2:]).replace("_READ", "").replace("_DELETE", "")
 
+
+            unique_categories.add(category)
+        print(unique_categories)
         context['groups_data'] = unique_categories
         dados = Dados.objects.filter(Login=name).values('Nome', 'CargoCodigo', 'FuncaoCodigo', 'LotacaoCod')
         dados2 = Dados.objects.filter(Login=name, FuncaoCodigo='1001')

@@ -4,7 +4,10 @@
 {% block content %}
 {% bootstrap_css %}
 <link rel="stylesheet" href="{% static '../static/css/main.css' %}" />
-
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.4/dist/jquery.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
 <div class="cal">
     <div class="cal">
         <div id="calendar2">
@@ -22,6 +25,7 @@
                     </select>
                 </div>
                 </thead>
+
                 <table class="table">
                     <tbody>
                     {% for cn in cn_list %}
@@ -31,10 +35,22 @@
                         <td scope="row">{{ cn }}</td>
                     </tr>
                     {% endfor %}
+                    </tbody>
                     <tbody id="user-list">
                     </tbody>
-                </table>
+                    <tbody>
 
+                        <tr id="novo_membro" name="novo_membro">
+                            <td scope="row"></td>
+                            <td scope="row">Inserir novo membro a pasta</td>
+                            <td scope="row"></td>
+                            <td scope="row"></td>
+                            <td scope="row"><button class="btn btn-danger my-2 my-sm-0" type="button" data-toggle="modal" data-target="#myModal"><img src="{% static '../static/images/plus-square.svg' %}"></button></td>
+
+                        </tr>
+
+                    </tbody>
+                </table>
             </nav>
         </div>
     </div>
@@ -74,10 +90,103 @@
         }
     });
 });</script>
+<script>
+    $(document).ready(function() {
+        $('#novo_membro button').click(function() {
+            var csrfToken = '{{ csrf_token }}'; // Obter o token CSRF do Django
+
+            $.ajax({
+                url: '/get_all_users/',
+                type: 'GET',
+                headers: {
+                    'X-CSRFToken': csrfToken // Passar o token CSRF no cabeçalho da requisição
+                },
+                success: function(response) {
+                    var users = response.users;
+                    var userList2 = $('#user-list2');
+                    userList2.empty();
+
+                    for (var i = 0; i < users.length; i++) {
+                        var cn = users[i].cn;
+                        var row = $('<tr>');
+
+                        var userCell = $('<td>').text(cn);
+                        var addButton = $('<button>').text('Adicionar').addClass('btn btn-primary');
+                        addButton.click(addUser);
+
+                        row.append(userCell);
+                        row.append($('<td>').append(addButton));
+                        userList2.append(row);
+                    }
+                },
+                error: function(xhr, status, error) {
+                    console.log(error);
+                }
+            });
+        });
+
+        function addUser() {
+            var user = $(this).closest('tr').find('td:first').text();
+            var selectedGroup = $('#novo_membro').val();
+
+            var csrfToken = '{{ csrf_token }}'; // Obter o token CSRF do Django
+
+            $.ajax({
+                url: '/add_user_to_group/',
+                type: 'POST',
+                headers: {
+                    'X-CSRFToken': csrfToken // Passar o token CSRF no cabeçalho da requisição
+                },
+                data: {
+                    user: user,
+                    group: selectedGroup
+                },
+                success: function(response) {
+                    console.log('Usuário adicionado ao grupo:', user, selectedGroup);
+                },
+                error: function(xhr, status, error) {
+                    console.log('Erro ao adicionar usuário ao grupo:', error);
+                }
+            });
+        }
+    });
+</script>
+
 
     <!-- Exibir a lista de usuários -->
     <div id="user-list"></div>
 </div>
+
+<!-- The Modal -->
+  <div class="modal" id="myModal">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        {% csrf_token %}
+        <!-- Modal Header -->
+        <div class="modal-header">
+          <h4 class="modal-title">Todos os Usuarios</h4>
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+
+        <!-- Modal body -->
+        <div class="modal-body">
+            {% csrf_token %}
+            <div id="user-list2"></div>
+        </div>
+
+        <!-- Modal footer -->
+        <div class="modal-footer">
+          <button type="button" class="btn btn-danger" data-dismiss="modal">Fechar</button>
+        </div>
+
+      </div>
+    </div>
+  </div>
+<form id="add-user-form" method="post" action="/add_user_to_group/">
+  {% csrf_token %}
+  <!-- Restante dos campos do formulário -->
+  <button type="submit">Adicionar</button>
+</form>
 
 <script src='fullcalendar/lang/pt-br.js'></script>
 {% bootstrap_javascript jquery='full' %}
