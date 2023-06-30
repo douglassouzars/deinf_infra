@@ -90,103 +90,139 @@
         }
     });
 });</script>
+
+<div class="modal" id="myModal">
+  <div class="modal-dialog">
+    <div class="modal-content">
+
+
+      <div class="modal-header">
+        <h4 class="modal-title">Todos os Usuários</h4>
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+      </div>
+
+
+      <div class="modal-body">
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Usuário</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody id="user-list2">
+
+          </tbody>
+        </table>
+
+      </div>
+
+
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger" data-dismiss="modal">Fechar</button>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+
 <script>
-    $(document).ready(function() {
-        $('#novo_membro button').click(function() {
-            var csrfToken = '{{ csrf_token }}'; // Obter o token CSRF do Django
+$(document).ready(function() {
+    var csrfToken = '{{ csrf_token }}'; // Obter o token CSRF do Django
 
-            $.ajax({
-                url: '/get_all_users/',
-                type: 'GET',
-                headers: {
-                    'X-CSRFToken': csrfToken // Passar o token CSRF no cabeçalho da requisição
-                },
-                success: function(response) {
-                    var users = response.users;
-                    var userList2 = $('#user-list2');
-                    userList2.empty();
+    $('#myModal').on('show.bs.modal', function() {
+        $.ajax({
+            url: '/get_all_users/',
+            type: 'GET',
+            headers: {
+                'X-CSRFToken': csrfToken // Passar o token CSRF no cabeçalho da requisição
+            },
+            success: function(response) {
+                var users = response.users;
+                var userList2 = $('#user-list2');
+                userList2.empty();
 
-                    for (var i = 0; i < users.length; i++) {
-                        var cn = users[i].cn;
-                        var row = $('<tr>');
+                for (var i = 0; i < users.length; i++) {
+                    var cn = users[i].cn;
+                    var row = $('<tr>');
 
-                        var userCell = $('<td>').text(cn);
-                        var addButton = $('<button>').text('Adicionar').addClass('btn btn-primary');
-                        addButton.click(addUser);
+                    var userCell = $('<td>').text(cn);
+                    var addButton = $('<button>').text('Adicionar').addClass('btn btn-primary');
+                    addButton.click(addUser.bind(null, cn)); // Passar o valor do 'cn' como argumento para a função addUser
 
-                        row.append(userCell);
-                        row.append($('<td>').append(addButton));
-                        userList2.append(row);
-                    }
-                },
-                error: function(xhr, status, error) {
-                    console.log(error);
+                    row.append(userCell);
+                    row.append($('<td>').append(addButton));
+                    userList2.append(row);
                 }
-            });
+            },
+            error: function(xhr, status, error) {
+                console.log(error);
+            }
         });
+    });
 
-        function addUser() {
-            var user = $(this).closest('tr').find('td:first').text();
-            var selectedGroup = $('#novo_membro').val();
+    $('#addUserButton').click(function() {
+        var selectedUser = $('#user-list2 tr.selected').find('td:first').text();
 
-            var csrfToken = '{{ csrf_token }}'; // Obter o token CSRF do Django
-
+        // Faça o que for necessário com o usuário selecionado (exemplo: adicionar ao grupo)
+        if (selectedUser) {
             $.ajax({
-                url: '/add_user_to_group/',
+                url: '/adicionar_usuario/',
                 type: 'POST',
                 headers: {
                     'X-CSRFToken': csrfToken // Passar o token CSRF no cabeçalho da requisição
                 },
                 data: {
-                    user: user,
-                    group: selectedGroup
+                    'user': selectedUser
+
                 },
                 success: function(response) {
-                    console.log('Usuário adicionado ao grupo:', user, selectedGroup);
+                    console.log('Usuário adicionado ao grupo com sucesso');
                 },
                 error: function(xhr, status, error) {
-                    console.log('Erro ao adicionar usuário ao grupo:', error);
+                    console.log(error);
                 }
             });
         }
+
+        // Fechar o modal após a ação
+        $('#myModal').modal('hide');
     });
+
+    $('#user-list2').on('click', 'tr', function() {
+        $(this).toggleClass('selected').siblings().removeClass('selected');
+    });
+
+    function addUser(cn) {
+    // Faça o que for necessário com o usuário selecionado (exemplo: adicionar ao grupo)
+    if (cn) {
+        $.ajax({
+            url: '/adicionar_usuario/',
+            type: 'POST',
+            headers: {
+                'X-CSRFToken': csrfToken // Passar o token CSRF no cabeçalho da requisição
+            },
+            data: {
+                'user': cn
+            },
+            success: function(response) {
+                console.log('Usuário adicionado ao grupo com sucesso');
+                location.reload(); // Recarregar a página após adicionar o usuário ao grupo
+            },
+            error: function(xhr, status, error) {
+                console.log(error);
+            }
+        });
+    }
+
+    // Fechar o modal após a ação
+    $('#myModal').modal('hide');
+}
+});
+
 </script>
 
-
-    <!-- Exibir a lista de usuários -->
-    <div id="user-list"></div>
-</div>
-
-<!-- The Modal -->
-  <div class="modal" id="myModal">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        {% csrf_token %}
-        <!-- Modal Header -->
-        <div class="modal-header">
-          <h4 class="modal-title">Todos os Usuarios</h4>
-          <button type="button" class="close" data-dismiss="modal">&times;</button>
-        </div>
-
-        <!-- Modal body -->
-        <div class="modal-body">
-            {% csrf_token %}
-            <div id="user-list2"></div>
-        </div>
-
-        <!-- Modal footer -->
-        <div class="modal-footer">
-          <button type="button" class="btn btn-danger" data-dismiss="modal">Fechar</button>
-        </div>
-
-      </div>
-    </div>
-  </div>
-<form id="add-user-form" method="post" action="/add_user_to_group/">
-  {% csrf_token %}
-  <!-- Restante dos campos do formulário -->
-  <button type="submit">Adicionar</button>
-</form>
 
 <script src='fullcalendar/lang/pt-br.js'></script>
 {% bootstrap_javascript jquery='full' %}

@@ -1,5 +1,5 @@
 from django.urls import path, include
-from .views import logouts , cadastro, loadcadastro, index, loadlogin, mapeamento, get_users_from_group, get_all_users, add_user_to_group
+from .views import logouts , cadastro, loadcadastro, index, loadlogin, mapeamento, get_users_from_group, get_all_users, add_user_to_group, adicionar_usuario
 #from .views import LoadloginView
 from django.contrib.auth import views as auth_views
 from django.views.generic.base import  TemplateView
@@ -12,6 +12,7 @@ urlpatterns = [
     path('', auth_views.LoginView.as_view(template_name='registration/login.html'), name='login'),
     path('loadlogin/', loadlogin, name='loadlogin'),
     path('logouts/', logouts, name='logouts'),
+    path('adicionar_usuario/', adicionar_usuario, name='adicionar_usuario'),
     path('password-reset/', auth_views.PasswordResetView.as_view(), name='password_reset'),
     path('password-reset/done/', auth_views.PasswordResetDoneView.as_view(), name='password_reset_done'),
     path('reset/<uidb64>/<token>/', auth_views.PasswordResetConfirmView.as_view(), name='password_reset_confirm'),

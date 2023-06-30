@@ -234,6 +234,66 @@ return JsonResponse({'users': users_list})
 """
 
 import json
+from django.http import HttpResponseServerError
+
+import ldap
+from ldap import modlist
+from django.http import HttpResponseServerError
+
+def adicionar_usuario(request):
+    if request.method == 'POST':
+        username = request.POST.get('user')  # Obter o nome de usuário enviado na requisição
+        group_cn = 'GGRP_USERS_DEINF_READ'  # CN do grupo ao qual você deseja adicionar o usuário
+        base_dn = 'OU=FILE SERVER,OU=GROUPS,OU=ACCOUNT AND GROUPS,DC=DOUGLAS,DC=TESTE'  # Base DN onde o grupo está localizado
+        selected_group = request.session.get('group')
+
+        select_dep = request.session.get('departamento')
+        input_string = select_dep
+        components = input_string.split('/')
+        components.reverse()
+        output_string = ','.join([f'OU={component}' for component in components])
+
+        try:
+            
+            password = '@teste159'
+            server_url = 'ldap://SRVDOUGLAS'
+            bind_dn = 'conexao_ldap@DOUGLAS.TESTE'
+            group_cn2 = f'GGRP_USERS_{selected_group}_READ'
+
+
+            # Conectar e autenticar no servidor LDAP
+            conn = ldap.initialize(server_url)
+            conn.simple_bind_s(bind_dn, password)
+
+            # Realizar a pesquisa para obter o DN completo do grupo com base no CN
+            #base_dn = 'OU=DEINF,OU=DA,OU=PRES,OU=FILE SERVER,OU=GROUPS,OU=ACCOUNT AND GROUPS,DC=DOUGLAS,DC=TESTE'
+            base_dn = f'{output_string},OU=FILE SERVER,OU=GROUPS,OU=ACCOUNT AND GROUPS,DC=DOUGLAS,DC=TESTE'
+            group_cn = group_cn2
+            group_filter = f"(CN={group_cn})"
+            group_results = conn.search_s(base_dn, ldap.SCOPE_SUBTREE, group_filter)
+            print(group_results)
+
+            if group_results:
+                group_dn = group_results[0][0]  # Obter o DN do grupo encontrado
+                print(group_dn)
+                member_dn = f"CN={username},OU=USUARIOS,OU=ACCOUNT,OU=ACCOUNT AND GROUPS,DC=DOUGLAS,DC=TESTE"  # DN do usuário a ser adicionado
+                mod_attrs = [
+                    (ldap.MOD_ADD, 'member', member_dn.encode('utf-8'))  # Adicionar o usuário como membro do grupo
+                ]
+                conn.modify_s(group_dn, mod_attrs)
+
+
+                return HttpResponse('Usuário adicionado ao grupo com sucesso')
+            else:
+                return HttpResponseServerError('Grupo não encontrado')
+
+        except ldap.LDAPError as e:
+            return HttpResponseServerError('Erro ao adicionar o usuário ao grupo: ' + str(e))
+
+    return HttpResponseBadRequest('Método de requisição inválido')
+
+
+
 def add_user_to_group(request):
     if request.method == 'POST':
         user = request.POST.get('user')  # Obtém o nome do usuário do POST
@@ -258,6 +318,7 @@ def add_user_to_group(request):
 
     return HttpResponse('Método de requisição inválido.')
 def get_all_users(request):
+    print("tttt")
     server = 'ldap://SRVDOUGLAS'
     username = 'conexao_ldap@DOUGLAS.TESTE'
     password = '@teste159'
@@ -279,16 +340,15 @@ def get_all_users(request):
     response_data = {
         'users': users
     }
-    json_response = json.dumps(response_data)
-
-    return HttpResponse(json_response, content_type='application/json')
+    print(response_data)
+    return HttpResponse(json.dumps(response_data), content_type='application/json')
 
 
 def get_users_from_group(request):
     #selected_group = 'DEINF'
     selected_group = request.GET.get('selected_group')  # Obtém o grupo selecionado do request.GET
     print(selected_group)
-
+    request.session['group'] = selected_group
     group_cn2 = f'GGRP_USERS_{selected_group}_READ'
     group_cn = group_cn2
     group_filter = f"(cn={group_cn})"
@@ -322,7 +382,8 @@ def get_users_from_group(request):
                 cn_list.append(cn)
 
         response_data = {
-            'cn_list': cn_list
+            'cn_list': cn_list,
+
         }
         print(response_data)
         return HttpResponse(json.dumps(response_data), content_type='application/json')
@@ -367,7 +428,7 @@ def mapeamento(request):
         context['m'] = entry.get('memberOf', [b''])[0].decode()
         context['title'] = entry.get('title', [b''])[0].decode()
         context['dep'] = entry.get('department', [b''])[0].decode()
-
+        select_dep = context['dep']
         current_dn = context['m']
         print("uiui",current_dn)
         components = current_dn.split(',')
@@ -390,6 +451,7 @@ def mapeamento(request):
         dados = Dados.objects.filter(Login=name).values('Nome', 'CargoCodigo', 'FuncaoCodigo', 'LotacaoCod')
         dados2 = Dados.objects.filter(Login=name, FuncaoCodigo='1001')
 
+        request.session['departamento'] = select_dep
         if dados2.exists():
             dados = Dados.objects.filter(Login=name).values('Nome', 'CargoCodigo', 'FuncaoCodigo', 'LotacaoCod')
             lotacao_cod = dados[0]['LotacaoCod']
