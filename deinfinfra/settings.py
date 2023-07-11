@@ -111,6 +111,7 @@ DATABASES = {
     }
 }
 
+X_FRAME_OPTIONS = 'ALLOWALL'
 
 # Password validation
 # https://docs.djangoproject.com/en/4.1/ref/settings/#auth-password-validators
@@ -203,13 +204,13 @@ AUTH_LDAP_GROUP_SEARCH = LDAPSearch("dc=NOVACAP,dc=SEDE",
 AUTH_LDAP_GROUP_TYPE = GroupOfNamesType()
 AUTH_LDAP_REQUIRE_GROUP = "dc=NOVACAP,dc=SEDE"
 AUTH_LDAP_DENY_GROUP = "dc=NOVACAP,dc=SEDE"
-
+"""
 #Configuração de e-mail
 
-EMAIL_HOST = 'localhost'
-EMAIL_HOST_USER = 'NO-REPLY@seudominio.com.br'
+EMAIL_HOST = "smtp-mail.outlook.com"
+EMAIL_HOST_USER = 'douglassouza.estagiario@novacap.df.gov.br'
 EMAIL_PORT = 587
 EMAIL_USER_TSL = True
-EMAIL_HOST_PASSWORD = 'sua-senha'
-"""
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+EMAIL_HOST_PASSWORD = '12345678'
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'

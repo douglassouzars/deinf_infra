@@ -1,8 +1,17 @@
 from django.db import models
 
+
+
 from django.db.models import signals
 from django.template.defaultfilters import slugify
 
+class Mapeamento(models.Model):
+    subchefe = models.BooleanField(default=False, null= True)
+    cn = models.CharField(max_length=100, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'mapeamento'
 
 class Dados(models.Model):
     Matricula = models.CharField(max_length=11, null=True)
@@ -101,6 +110,7 @@ class Cadastro(models.Model):
     ValeCombustivel = models.BooleanField("ValeCombustivel",null= True, default=False)
     PlanoDeSaude = models.BooleanField("PlanoDeSaude",null= True, default=False)
     ValeAlimentacao = models.BooleanField(null= True)
+    Setor = models.CharField(max_length=50, null=True, default='')
 
     class Meta:
         managed = False

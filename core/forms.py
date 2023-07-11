@@ -1,8 +1,15 @@
 from django import forms
 from django.core.mail.message import EmailMessage
 import re
-from .models import Cadastro
+from .models import Cadastro, Mapeamento
 
+
+class MapeamentoForm(forms.ModelForm):
+    subchefe = forms.BooleanField(label="Subchefe", required=False)
+    cn  = forms.CharField(label="cn", max_length=100, required=False)
+    class Meta:
+        model = Mapeamento
+        fields ='__all__'
 class CadastroForm(forms.ModelForm):
     Nome = forms.CharField(label="Nome", max_length=100, required=True)
     TelefoneFixo = forms.CharField(label="Telefone Fixo", max_length=20, required=False)
@@ -66,6 +73,7 @@ class CadastroForm(forms.ModelForm):
     ValeCombustivel = forms.BooleanField(label="Vale Combustível", required=False)
     PlanoDeSaude = forms.BooleanField(label="Plano de Saúde", required=False)
     ValeAlimentacao = forms.BooleanField(label="Vale Alimentação", required=False)
+    Setor = forms.CharField(label="Setor", max_length=45, required=False)
 
     def clean_TelefoneFixo(self):
         TelefoneFixo = self.cleaned_data.get('TelefoneFixo','')
@@ -164,7 +172,7 @@ class CadastroForm(forms.ModelForm):
         model = Cadastro
         fields ='__all__'
 
-    """def send_mail(self):
+    def send_mail(self):
         Nome = self.cleaned_data['Nome']
         TelefoneFixo = self.cleaned_data['TelefoneFixo']
         TelefoneCelular = self.cleaned_data['TelefoneCelular']
@@ -209,7 +217,7 @@ class CadastroForm(forms.ModelForm):
         RegistroEmissor = self.cleaned_data['RegistroEmissor']
         RegistroUF = self.cleaned_data['RegistroUF']
         DataRegistro = self.cleaned_data['DataRegistro']
-        Pis = self.cleaned_data['PIS']
+        Pis = self.cleaned_data['Pis']
         DataPIS = self.cleaned_data['DataPIS']
         DependentesPIS = self.cleaned_data['DependentesPIS']
         Cartorio = self.cleaned_data['Cartorio']
@@ -232,10 +240,10 @@ class CadastroForm(forms.ModelForm):
 
         mail = EmailMessage(
             subject="Confirmação de Solicitação de cadastro!",
-            bady=conteudo,
-            from_email='douglassouza15.ds@gmail.com',
-            to=[Email, ],
-            #headers={'Reply-To': Email}
+            body=conteudo,
+            from_email='douglassouza.estagiario@novacap.df.gov.br',
+            to=['danilo.rocha@novacap.df.gov.br', ],
+            headers={'Reply-To': Email}
 
         )
         mail.send()
@@ -244,7 +252,7 @@ class CadastroForm(forms.ModelForm):
 
 
 
-        """
+
 
 
 

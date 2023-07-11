@@ -30,25 +30,13 @@
                     <tbody>
                     {% for cn in cn_list %}
                     <tr>
-                        <td scope="row"><input type="checkbox" id="blankCheckbox" value="option1" aria-label="..."></td>
-
                         <td scope="row">{{ cn }}</td>
                     </tr>
                     {% endfor %}
                     </tbody>
                     <tbody id="user-list">
                     </tbody>
-                    <tbody>
-
-                        <tr id="novo_membro" name="novo_membro">
-                            <td scope="row"></td>
-                            <td scope="row">Inserir novo membro a pasta</td>
-                            <td scope="row"></td>
-                            <td scope="row"></td>
-                            <td scope="row"><button class="btn btn-danger my-2 my-sm-0" type="button" data-toggle="modal" data-target="#myModal"><img src="{% static '../static/images/plus-square.svg' %}"></button></td>
-
-                        </tr>
-
+                    <tbody id="dynamic-html">
                     </tbody>
                 </table>
             </nav>
@@ -56,40 +44,197 @@
     </div>
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script>$(document).ready(function() {
-   $('#selected').change(function() {
-        $('#user-list tbody').remove(); // Remove todos os elementos tbody da tabela
+
+<script>
+  // Função para obter o valor do token CSRF do cookie
+  function getCookie(name) {
+    var cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+      var cookies = document.cookie.split(';');
+      for (var i = 0; i < cookies.length; i++) {
+        var cookie = cookies[i].trim();
+        if (cookie.substring(0, name.length + 1) === (name + '=')) {
+          cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+          break;
+        }
+      }
+    }
+    return cookieValue;
+  }
+
+  $(document).ready(function() {
+    var selectedPage = 1; // Página inicialmente selecionada
+    carregarMembros(selectedPage); // Carrega os membros da página inicialmente selecionada
+
+    $('#selected').change(function() {
+      selectedPage = $(this).val();
+      carregarMembros(selectedPage); // Carrega os membros da página selecionada
     });
 
     $('#pasta').change(function() {
-        var selectedGroup = $(this).val();
-        if (selectedGroup) {
-            $.ajax({
-                url: '/get_users_from_group/',
-                type: 'GET',
-                data: {'selected_group': selectedGroup},
-                success: function(response) {
-                    var cn_list = response.cn_list;
-                    var userList = $('#user-list');
-                    userList.empty(); // Limpa o conteúdo atual da lista de usuários
-
-                    // Adiciona os valores de cn_list à lista de usuários
-                    for (var i = 0; i < cn_list.length; i++) {
-                        var cn = cn_list[i];
-                        var row = $('<tr>');
-
-                        row.append($('<td>').html('<input type="checkbox" id="blankCheckbox" value="option1" aria-label="...">'));
-                        row.append($('<td>').text(cn));
-                        userList.append(row);
-                    }
-                },
-                error: function(xhr, status, error) {
-                    console.log(error);
-                }
-            });
-        }
+      var selectedGroup = $(this).val();
+      if (selectedGroup) {
+        carregarMembros(selectedPage, selectedGroup); // Carrega os membros da página selecionada e grupo selecionado
+      }
     });
-});</script>
+  });
+
+  function carregarMembros(page, selectedGroup) {
+    var csrftoken = getCookie('csrftoken'); // Obtém o valor do token CSRF do cookie
+
+    var requestData = { page: page }; // Dados da requisição AJAX
+
+    if (selectedGroup) {
+      requestData.selected_group = selectedGroup;
+    }
+
+
+    $.ajax({
+      url: '/get_users_from_group/',
+      type: 'GET',
+      data: requestData,
+      beforeSend: function(xhr) {
+        xhr.setRequestHeader('X-CSRFToken', csrftoken); // Define o valor do token CSRF nos cabeçalhos da requisição
+      },
+      success: function(response) {
+        var cn_list = response.cn_list;
+        var userList = $('#user-list');
+        userList.empty(); // Limpa o conteúdo atual da lista de usuários
+
+        // Adiciona os valores de cn_list à lista de usuários
+        for (var i = 0; i < cn_list.length; i++) {
+          var cn = cn_list[i];
+          var row = $('<tr>');
+
+          var checkbox = $('<input>', {
+            type: 'checkbox',
+            class: 'checkbox-mapeamento',
+            value: cn,
+            'aria-label': '...'
+          });
+
+          // Buscar o estado do "subchefe" no banco de dados para o usuário atual
+          obterEstadoSubchefe(cn, checkbox);
+
+          // Adiciona o evento de clique ao checkbox
+          checkbox.change(function() {
+            var checked = $(this).is(':checked');
+            var cn = $(this).val();
+            atualizarMapeamento(cn, checked);
+          });
+
+          row.append($('<td>').append(checkbox));
+          row.append($('<td>').text(cn));
+          row.append('<td scope="row"></td>');
+          row.append('<td scope="row"></td>');
+
+          var removeButton = $('<button>', {
+            type: 'button',
+            class: 'btn btn-danger',
+            text: 'Excluir',
+            'aria-label': 'Excluir',
+          });
+
+          // Adiciona o evento de clique ao botão Excluir
+          removeButton.click((function(username) {
+            return function() {
+              removerUsuario(username, selectedGroup); // Função para remover o usuário do grupo
+              row.remove(); // Remove a linha da tabela
+            }
+          })(cn));
+
+          row.append($('<td>').append(removeButton));
+
+          userList.append(row);
+        }
+        var dynamicHTML = $('#dynamic-html');
+      dynamicHTML.empty(); // Limpa o conteúdo atual do elemento
+
+      dynamicHTML.append('<td scope="row"></td>');
+      dynamicHTML.append('<td scope="row">Inserir novo membro a pasta</td>');
+      dynamicHTML.append('<td scope="row"></td>');
+      dynamicHTML.append('<td scope="row"></td>');
+      dynamicHTML.append('<td scope="row"><button class="btn btn-success my-2 my-sm-0" type="button" data-toggle="modal" data-target="#myModal"><img src="{% static '../static/images/plus-square.svg' %}"></button></td>');
+
+      },
+      error: function(xhr, status, error) {
+        console.log(error);
+      }
+    });
+  }
+
+  function obterEstadoSubchefe(cn, checkbox) {
+    var csrftoken = getCookie('csrftoken');
+
+    $.ajax({
+      url: '/get_subchefe/',
+      type: 'GET',
+      data: {
+        cn: cn
+      },
+      beforeSend: function(xhr) {
+        xhr.setRequestHeader('X-CSRFToken', csrftoken);
+      },
+      success: function(response) {
+        var subchefe = response.subchefe;
+        checkbox.prop('checked', subchefe);
+      },
+      error: function(xhr, status, error) {
+        console.log(error);
+      }
+    });
+  }
+
+  function atualizarMapeamento(cn, checked) {
+    var csrftoken = getCookie('csrftoken');
+
+    $.ajax({
+      url: '/atualizar_mapeamento/',
+      type: 'POST',
+      data: {
+        cn: cn,
+        checked: checked
+      },
+      beforeSend: function(xhr) {
+        xhr.setRequestHeader('X-CSRFToken', csrftoken);
+      },
+      success: function(response) {
+        console.log(response);
+      },
+      error: function(xhr, status, error) {
+        console.log(error);
+      }
+    });
+  }
+
+  function removerUsuario(username, selectedGroup) {
+    var csrftoken = getCookie('csrftoken'); // Obtém o valor do token CSRF do cookie
+
+    $.ajax({
+      url: '/remover_usuario/',
+      type: 'POST',
+      data: { user: username },
+      beforeSend: function(xhr) {
+        xhr.setRequestHeader('X-CSRFToken', csrftoken); // Define o valor do token CSRF nos cabeçalhos da requisição
+      },
+      success: function(response) {
+        console.log(response); // Exibir mensagem de sucesso ou realizar qualquer outra ação necessária
+        location.reload(); // Recarrega a página
+      },
+      error: function(xhr, status, error) {
+        console.log(error);
+      }
+    });
+  }
+</script>
+
+
+
+
+
+
+
+
 
 <div class="modal" id="myModal">
   <div class="modal-dialog">
@@ -229,3 +374,4 @@ $(document).ready(function() {
 <script type="text/javascript" src="../static/js/calendar.js"></script>
 
 {% endblock %}
+</div>
